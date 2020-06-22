@@ -60,6 +60,8 @@ class MainPresenter(
                         val current = pair.first
                         val map = pair.second
 
+                        view.updateAdapter(current, map.values)
+
                         Log.d(TAG, "current: ${current.name}")
                         Log.d(TAG, "loadExchangerCurrency: ${map.size}")
                     }

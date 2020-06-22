@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_small"
+    tools:layout_height="180dp">
+
+    <TextView
+        android:id="@+id/text_view_currency"
+        style="@style/Text.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/text_view_amount"
+        app:layout_constraintEnd_toStartOf="@id/edit_text_exchange"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="EUR" />
+
+    <TextView
+        android:id="@+id/text_view_amount"
+        style="@style/Text.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_currency"
+        tools:text="You have: 50$" />
+
+
+    <EditText
+        android:id="@+id/edit_text_exchange"
+        android:textAppearance="@style/Text.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_exchange"
+        app:layout_constraintBottom_toTopOf="@id/text_view_label_exchange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@id/text_view_currency"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_view_label_exchange"
+        style="@style/Text.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_exchange"
+        tools:text="1 = 0.77" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

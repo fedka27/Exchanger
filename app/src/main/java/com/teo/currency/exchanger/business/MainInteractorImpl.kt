@@ -16,17 +16,25 @@ class MainInteractorImpl(
                 val rates = response.rates
 
                 val baseValue = response.rates[base] ?: 1.0 //default currency relative to yourself
-                val currentCurrency = Currency(base, baseValue, getBalanceOfCurrency(base))
+                val currentCurrency = Currency(
+                    base,
+                    baseValue,
+                    getBalanceOfCurrency(base),
+                    getSymbol(base)
+                )
 
                 val map = rates.mapValues {
-                    Currency(it.key, it.value, getBalanceOfCurrency(it.key))
+                    val currency = it.key
+                    Currency(it.key, it.value, getBalanceOfCurrency(currency), getSymbol(currency))
                 }
 
                 return@map Pair(currentCurrency, map)
             }
     }
 
-    fun getBalanceOfCurrency(currency: String): Double {
+    private fun getSymbol(currency: String) = java.util.Currency.getInstance(currency).symbol
+
+    private fun getBalanceOfCurrency(currency: String): Double {
         //todo get balance of current
         return 100.00
     }

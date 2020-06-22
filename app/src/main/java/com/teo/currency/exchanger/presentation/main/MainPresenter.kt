@@ -2,7 +2,7 @@ package com.teo.currency.exchanger.presentation.main
 
 import android.util.Log
 import com.teo.currency.exchanger.business.MainInteractor
-import com.teo.currency.exchanger.business.dto.Currency
+import com.teo.currency.exchanger.business.dto.CurrencyExchange
 import com.teo.currency.exchanger.presentation.base.BasePresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -18,7 +18,7 @@ class MainPresenter(
         private const val INTERVAL_CURRENCY_UPDATE = 30L //Seconds
     }
 
-    private val currencySubject = PublishSubject.create<Pair<Currency, Map<String, Currency>>>()
+    private val currencySubject = PublishSubject.create<Map<String, CurrencyExchange>>()
 
     override fun onCreate() {
         super<BasePresenter>.onCreate()
@@ -56,13 +56,10 @@ class MainPresenter(
                     onError = {
                         it.printStackTrace()
                     },
-                    onNext = { pair ->
-                        val current = pair.first
-                        val map = pair.second
+                    onNext = { map ->
 
-                        view.updateAdapter(current, map.values)
+                        view.setCurrencyList(map.values.first(), map.values)
 
-                        Log.d(TAG, "current: ${current.name}")
                         Log.d(TAG, "loadExchangerCurrency: ${map.size}")
                     }
                 )

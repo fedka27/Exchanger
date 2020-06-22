@@ -1,6 +1,6 @@
 package com.teo.currency.exchanger.business
 
-import com.teo.currency.exchanger.business.dto.Currency
+import com.teo.currency.exchanger.business.dto.CurrencyExchange
 import com.teo.currency.exchanger.data.network.ExchangerApi
 import io.reactivex.rxjava3.core.Single
 
@@ -8,7 +8,7 @@ class MainInteractorImpl(
     private val exchangerApi: ExchangerApi
 ) : MainInteractor {
 
-    override fun getExchangerCurrency(): Single<Pair<Currency, Map<String, Currency>>> {
+    override fun getExchangerCurrency(): Single<Map<String, CurrencyExchange>> {
         return exchangerApi.getLatestCurrency()
             .map { response ->
 
@@ -16,26 +16,39 @@ class MainInteractorImpl(
                 val rates = response.rates
 
                 val baseValue = response.rates[base] ?: 1.0 //default currency relative to yourself
-                val currentCurrency = Currency(
-                    base,
+                val currency = getCurrency(base)
+                val currentCurrency = CurrencyExchange(
+                    currency,
                     baseValue,
-                    getBalanceOfCurrency(base),
-                    getSymbol(base)
+                    getBalanceOfCurrency(base)
                 )
 
-                val map = rates.mapValues {
-                    val currency = it.key
-                    Currency(it.key, it.value, getBalanceOfCurrency(currency), getSymbol(currency))
-                }
+                val hashmap = hashMapOf<String, CurrencyExchange>()
+                    .apply {
+                        //Add base currency as first
+                        put(base, currentCurrency)
+                        //Map other rates
+                        putAll(
+                            rates.mapValues {
+                                CurrencyExchange(
+                                    getCurrency(it.key),
+                                    it.value,
+                                    getBalanceOfCurrency(it.key)
+                                )
+                            }
+                        )
+                    }
 
-                return@map Pair(currentCurrency, map)
+
+
+                return@map hashmap
             }
     }
-
-    private fun getSymbol(currency: String) = java.util.Currency.getInstance(currency).symbol
 
     private fun getBalanceOfCurrency(currency: String): Double {
         //todo get balance of current
         return 100.00
     }
+
+    private fun getCurrency(currency: String) = java.util.Currency.getInstance(currency)
 }

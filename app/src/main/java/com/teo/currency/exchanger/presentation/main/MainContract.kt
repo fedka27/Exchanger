@@ -5,7 +5,7 @@ import com.teo.currency.exchanger.presentation.base.BaseContractPresenter
 import com.teo.currency.exchanger.presentation.base.BaseContractView
 
 object MainContract {
-    interface View : BaseContractView{
+    interface View : BaseContractView {
 
         fun showProgress()
 
@@ -36,7 +36,7 @@ object MainContract {
         fun showErrorNotEnoughAmount()
     }
 
-    interface Presenter: BaseContractPresenter<View> {
+    interface Presenter : BaseContractPresenter<View> {
         fun onExchangeClick(
             from: CurrencyExchange,
             to: CurrencyExchange

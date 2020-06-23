@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 
 interface ExchangerApi {
-    companion object{
+    companion object {
         const val BASE_URL = "https://api.exchangeratesapi.io/"
     }
 

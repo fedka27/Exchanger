@@ -3,10 +3,9 @@ package com.teo.currency.exchanger.components.app
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module
-class AppModule(private val applicationContext: Context){
+class AppModule(private val applicationContext: Context) {
 
     @Provides
     @AppScope

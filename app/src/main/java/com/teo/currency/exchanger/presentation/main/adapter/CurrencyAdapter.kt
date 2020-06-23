@@ -5,8 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.teo.currency.exchanger.business.dto.CurrencyExchange
 
-class CurrencyAdapter(
-) : RecyclerView.Adapter<CurrencyViewHolder>() {
+class CurrencyAdapter : RecyclerView.Adapter<CurrencyViewHolder>() {
     private val TAG: String = CurrencyAdapter::class.java.simpleName
 
     private var currencyExchange: CurrencyExchange? = null

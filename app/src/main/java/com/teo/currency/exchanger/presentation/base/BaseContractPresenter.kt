@@ -3,11 +3,11 @@ package com.teo.currency.exchanger.presentation.base
 interface BaseContractPresenter<VIEW : BaseContractView> {
     var view: VIEW
 
-    fun onCreate(){}
+    fun onCreate() {}
 
-    fun onStart(){}
+    fun onStart() {}
 
-    fun onStop(){}
+    fun onStop() {}
 
-    fun onDestroy(){}
+    fun onDestroy() {}
 }

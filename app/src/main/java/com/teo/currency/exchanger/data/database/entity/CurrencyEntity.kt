@@ -1,6 +1,8 @@
 package com.teo.currency.exchanger.data.database.entity
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "currency_table")
 data class CurrencyEntity(

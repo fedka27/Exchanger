@@ -2,7 +2,6 @@ package com.teo.currency.exchanger.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.teo.currency.exchanger.data.database.dao.CurrencyDao
 import com.teo.currency.exchanger.data.database.entity.CurrencyEntity
 

@@ -9,10 +9,6 @@ abstract class BasePresenter<VIEW : BaseContractView> : BaseContractPresenter<VI
 
     protected var compositeDisposable = CompositeDisposable()
 
-    override fun onCreate() {
-        super.onCreate()
-    }
-
     override fun onStop() {
         compositeDisposable.clear()
     }

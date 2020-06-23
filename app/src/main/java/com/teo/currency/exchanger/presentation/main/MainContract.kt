@@ -14,7 +14,7 @@ object MainContract {
 
     }
 
-    interface Presenter: BaseContractPresenter<View>{
+    interface Presenter: BaseContractPresenter<View>, CurrencyCalculator{
 
     }
 }

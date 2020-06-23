@@ -27,10 +27,13 @@ class MainActivity :
     }
 
     private fun initCurrencyFromViews(baseCurrencyExchange: CurrencyExchange) {
-        adapterFrom = CurrencyAdapter(baseCurrencyExchange)
+        adapterFrom = CurrencyAdapter(baseCurrencyExchange, presenter)
         pager_currency_from.adapter = adapterFrom
         pager_currency_from.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
+        adapterFrom!!.exchangeChangeListener = {
+            adapterTo?.updateExchangeAmount(it)
+        }
         pager_currency_from.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -43,10 +46,13 @@ class MainActivity :
     }
 
     private fun initCurrencyToViews(baseCurrencyExchange: CurrencyExchange) {
-        adapterTo = CurrencyAdapter(baseCurrencyExchange)
+        adapterTo = CurrencyAdapter(baseCurrencyExchange, presenter)
         pager_currency_to.adapter = adapterTo
         pager_currency_to.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
+        adapterTo!!.exchangeChangeListener = {
+            adapterFrom?.updateExchangeAmount(it)
+        }
         pager_currency_to.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)

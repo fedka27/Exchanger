@@ -69,7 +69,7 @@ class MainInteractorImpl(
     private fun String.canDisplayCurrency() = this == "EUR" ||
             this == "USD" ||
             this == "RUB" ||
-            this == "GBR"
+            this == "GBP"
 
     override fun getCurrencyList(): Single<List<CurrencyExchange>> {
         return Single.create { emitter ->

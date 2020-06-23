@@ -16,7 +16,7 @@ class MainPresenter(
 ) : BasePresenter<MainContract.View>(),
     MainContract.Presenter {
     companion object {
-        private const val INTERVAL_CURRENCY_UPDATE = 30L //Seconds
+        private const val INTERVAL_CURRENCY_UPDATE = 3L //Seconds
     }
 
     private val currencySubject = PublishSubject.create<Map<String, CurrencyExchange>>()
@@ -73,14 +73,13 @@ class MainPresenter(
                     onNext = { map ->
                         val list = map.values
 
-                        if (currencyFrom == null){
+                        if (currencyFrom == null) {
                             val defCurrency = list.first()
-
                             currencyFrom = defCurrency
                         }
-                        if (currencyTo == null){
-                            val defCurrency = list.first()
 
+                        if (currencyTo == null) {
+                            val defCurrency = list.first()
                             currencyTo = defCurrency
                         }
 
@@ -118,22 +117,32 @@ class MainPresenter(
     }
 
     override fun changeAmountFrom(from: CurrencyExchange) {
+        currencyFrom = from
+
         val to = currencyTo!!
         val rate = from.calculateRateOneUnit(to)
 
         to.amountAtRate = from.calculateCurrencyByRate(rate)
 
-        Log.d(TAG, "changeAmountFrom: ${from.amountAtRate}: ${from.name} -> ${to.name} = ${to.amountAtRate}")
+        Log.d(
+            TAG,
+            "changeAmountFrom: ${from.amountAtRate}: ${from.name} -> ${to.name} = ${to.amountAtRate}"
+        )
         view.updatedCurrencyToItem(to)
     }
 
     override fun changeAmountTo(to: CurrencyExchange) {
+        currencyTo = to
+
         val from = currencyFrom!!
 
         val rate = to.calculateRateOneUnit(from)
         from.amountAtRate = to.calculateCurrencyByRate(rate)
 
-        Log.d(TAG, "changeAmountFrom: ${to.amountAtRate}: ${from.name} -> ${to.name} = ${to.amountAtRate}")
+        Log.d(
+            TAG,
+            "changeAmountFrom: ${to.amountAtRate}: ${from.name} -> ${to.name} = ${to.amountAtRate}"
+        )
         view.updatedCurrencyFromItem(from)
     }
 

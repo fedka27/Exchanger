@@ -7,6 +7,7 @@ import javax.inject.Inject
 abstract class BaseActivity<
         VIEW : BaseContractView,
         PRESENTER : BaseContractPresenter<VIEW>> : AppCompatActivity() {
+    protected val TAG: String = BaseActivity::class.java.simpleName
 
     @Inject
     lateinit var presenter: PRESENTER

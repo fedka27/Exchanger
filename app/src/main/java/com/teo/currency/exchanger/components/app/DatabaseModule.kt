@@ -18,7 +18,9 @@ class DatabaseModule {
             applicationContext,
             AppDatabase::class.java,
             "currency_exchanger_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @AppScope

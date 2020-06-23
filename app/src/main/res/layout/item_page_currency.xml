@@ -38,15 +38,18 @@
             app:layout_constraintEnd_toStartOf="@id/text_view_label_exchange"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="@string/label_amount" />
+            tools:text="@string/main_label_amount" />
 
 
         <EditText
             android:id="@+id/edit_text_exchange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_exchange"
+            android:hint="@string/main_hint_exchange"
             android:inputType="numberDecimal"
+            android:selectAllOnFocus="true"
+            android:imeOptions="actionDone"
+            android:gravity="center"
             android:textAppearance="@style/Text.Large"
             app:layout_constraintBottom_toTopOf="@id/text_view_label_exchange"
             app:layout_constraintEnd_toEndOf="parent"

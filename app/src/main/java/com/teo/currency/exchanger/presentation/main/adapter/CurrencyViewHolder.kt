@@ -7,42 +7,34 @@ import androidx.recyclerview.widget.RecyclerView
 import com.teo.currency.exchanger.R
 import com.teo.currency.exchanger.business.dto.CurrencyExchange
 import com.teo.currency.exchanger.presentation.extensions.inflateView
-import com.teo.currency.exchanger.presentation.main.CurrencyCalculator
 import kotlinx.android.synthetic.main.item_page_currency.view.*
 
 class CurrencyViewHolder(
     parent: ViewGroup,
-    private val currencyCalculator: CurrencyCalculator,
-    private val exchangeChangeListener: ((Double) -> Unit)? = null
+    private val exchangeChangeListener: ((CurrencyExchange) -> Unit)? = null
 ) :
     RecyclerView.ViewHolder(parent.inflateView(R.layout.item_page_currency)) {
 
     fun bind(
-        currencyExchange: CurrencyExchange,
-        item: CurrencyExchange,
-        exchangeAmountLast: Double?,
-        exchangeAmount: Double
+        exchangerAnother: CurrencyExchange,
+        exchangerItem: CurrencyExchange
     ) {
         with(itemView) {
             //Currency symbol
-            text_view_currency.text = item.currency.currencyCode
+            text_view_currency.text = exchangerItem.name
 
             //Available balance
             text_view_amount.text = context.getString(
-                R.string.label_amount,
-                item.amount,
-                item.currency.symbol
+                R.string.main_label_amount,
+                exchangerItem.amount,
+                exchangerItem.symbol
             )
 
-            val rate = currencyCalculator
-                .calculateRateOneUnit(item.value, currencyExchange.value)
+            val rate = exchangerItem.calculateRateOneUnit(exchangerAnother)
 
             //display last input value or calculate amount to exchange
-            val amount = exchangeAmountLast ?: currencyCalculator
-                .calculateCurrencyByRate(exchangeAmount, rate)
-
             //Set calculated amount by rate
-            edit_text_exchange.setText(String.format("%.2f", amount))
+            edit_text_exchange.setText(String.format("%.2f", exchangerItem.amountAtRate))
 
             //Listener of amount changes
             edit_text_exchange.addTextChangedListener(object : TextWatcher {
@@ -52,9 +44,11 @@ class CurrencyViewHolder(
 
                 override fun onTextChanged(text: CharSequence, p1: Int, p2: Int, p3: Int) {
                     if (edit_text_exchange.isFocused) {
-                        val newExchangeAmount = text.toString().toDoubleOrNull() ?: 0.0
+                        val newExchangeAmount = text.toString().toDoubleOrNull()
 
-                        exchangeChangeListener?.invoke(newExchangeAmount)
+                        exchangerItem.amountAtRate = newExchangeAmount ?: 0.0
+
+                        exchangeChangeListener?.invoke(exchangerItem)
                     }
                 }
             })
@@ -62,8 +56,8 @@ class CurrencyViewHolder(
             //Label about one currency relative to another
             val labelOfExchange = String.format(
                 "%s1 = %s%.2f",
-                item.currency.symbol,
-                currencyExchange.currency.symbol,
+                exchangerItem.symbol,
+                exchangerAnother.symbol,
                 rate
             )
             text_view_label_exchange.text = labelOfExchange

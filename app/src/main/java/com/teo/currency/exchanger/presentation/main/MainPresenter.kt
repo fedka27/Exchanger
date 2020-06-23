@@ -13,20 +13,22 @@ import java.util.concurrent.TimeUnit
 
 class MainPresenter(
     private val mainInteractor: MainInteractor
-) : BasePresenter<MainContract.View>(), MainContract.Presenter {
+) : BasePresenter<MainContract.View>(),
+    MainContract.Presenter {
     companion object {
         private const val INTERVAL_CURRENCY_UPDATE = 30L //Seconds
     }
 
     private val currencySubject = PublishSubject.create<Map<String, CurrencyExchange>>()
 
-    override fun onCreate() {
-        super<BasePresenter>.onCreate()
-
-        initCurrencyUpdater()
-    }
+    private lateinit var currencyFrom: CurrencyExchange
+    private lateinit var currencyTo: CurrencyExchange
 
     override fun onStart() {
+        super<BasePresenter>.onStart()
+
+        initCurrencyUpdater()
+
         startTimer()
     }
 
@@ -52,17 +54,67 @@ class MainPresenter(
             currencySubject
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    view.hideContent()
+                    view.showProgress()
+                }
+                .doOnNext {
+                    view.displayContent()
+                    view.hideProgress()
+                }
                 .subscribeBy(
                     onError = {
                         it.printStackTrace()
                     },
                     onNext = { map ->
 
-                        view.setCurrencyList(map.values.first(), map.values)
+                        view.setCurrencyList(map.values)
 
                         Log.d(TAG, "loadExchangerCurrency: ${map.size}")
                     }
                 )
         )
+    }
+
+    override fun onExchangeClick(
+        currencyFrom: CurrencyExchange,
+        currencyTo: CurrencyExchange
+    ) {
+
+        compositeDisposable.add(
+            mainInteractor
+                .exchangeCurrency(currencyFrom, currencyTo, currencyFrom.amountAtRate)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onError = {
+                        it.printStackTrace()
+                        //todo error
+                    },
+                    onSuccess = { currency ->
+                        view.updateExchangeCurrency(currency.first, currency.second)
+                        view.clearExchangeFields()
+                    })
+        )
+    }
+
+    override fun changeAmountFrom(it: CurrencyExchange) {
+
+    }
+
+    override fun changeAmountTo(it: CurrencyExchange) {
+
+    }
+
+    override fun updatedCurrencyFrom(currency: CurrencyExchange) {
+        this.currencyFrom = currency
+
+        view.updateCurrencyFrom(currencyFrom)
+    }
+
+    override fun updatedCurrencyTo(currency: CurrencyExchange) {
+        this.currencyTo = currency
+
+        view.updateCurrencyTo(currencyTo)
     }
 }

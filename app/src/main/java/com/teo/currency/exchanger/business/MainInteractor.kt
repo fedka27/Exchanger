@@ -9,7 +9,6 @@ interface MainInteractor {
 
     fun exchangeCurrency(
         currencyFrom: CurrencyExchange,
-        currencyTo: CurrencyExchange,
-        currentAmount: Double
+        currencyTo: CurrencyExchange
     ): Single<Pair<CurrencyExchange, CurrencyExchange>>
 }

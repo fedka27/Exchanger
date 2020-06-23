@@ -32,8 +32,8 @@ object MainContract {
 
     interface Presenter: BaseContractPresenter<View> {
         fun onExchangeClick(
-            currencyFrom: CurrencyExchange,
-            currencyTo: CurrencyExchange
+            from: CurrencyExchange,
+            to: CurrencyExchange
         )
 
         fun changeAmountFrom(from: CurrencyExchange)

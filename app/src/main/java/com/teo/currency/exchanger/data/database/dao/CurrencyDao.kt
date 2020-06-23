@@ -22,32 +22,42 @@ abstract class CurrencyDao {
 
     @Transaction
     open fun exchangeCurrency(
-        currencyEntityFrom: CurrencyEntity,
-        currencyEntityTo: CurrencyEntity,
-        amountFrom: Double,
-        amountTo: Double
+        currencyFrom: String,
+        currencyTo: String,
+        amountFromAtRate: Double,
+        amountFromToAtRate: Double
     ) {
-        Log.d(TAG, "exchangeCurrency from: $currencyEntityFrom")
-        Log.d(TAG, "exchangeCurrency to: $currencyEntityTo")
-        Log.d(TAG, "exchangeCurrency amount from: $amountFrom")
-        Log.d(TAG, "exchangeCurrency amount to: $amountTo")
-        //Validation
-        if (amountFrom <= 0) {
+        Log.d(TAG, "exchangeCurrency from: $currencyFrom")
+        Log.d(TAG, "exchangeCurrency to: $currencyTo")
+        Log.d(TAG, "exchangeCurrency amount from: $amountFromAtRate")
+        Log.d(TAG, "exchangeCurrency amount to: $amountFromToAtRate")
+
+        //First step - withdraw currency
+        val entityFrom = getCurrency(currencyFrom)!!
+
+        //Check for correct withdrawal
+        if (amountFromAtRate <= 0) {
             throw Errors.ExceptionZeroAmountValue()
         }
 
-        if (currencyEntityFrom.amount < amountFrom) {
+        if (entityFrom.amount < amountFromAtRate) {
             throw Errors.ExceptionNotEnoughAmount()
         }
 
-        val newAmountFrom = currencyEntityFrom.amount - amountFrom
-        val newAmountTo = currencyEntityTo.amount + amountTo
+        //Withdrawal
+        val newAmountFrom = entityFrom.amount - amountFromAtRate
+        //Save currency from
+        insertOrUpdateCurrency(entityFrom.copy(amount = newAmountFrom))
+
+        //Second step - receipt currency
+        val entityTo = getCurrency(currencyTo)!!
+        val newAmountTo = entityTo.amount + amountFromToAtRate
 
         Log.d(TAG, "exchangeCurrency new amount from: $newAmountFrom")
         Log.d(TAG, "exchangeCurrency new amount to: $newAmountTo")
 
-        insertOrUpdateCurrency(currencyEntityFrom.copy(amount = newAmountFrom))
-        insertOrUpdateCurrency(currencyEntityTo.copy(amount = newAmountTo))
+        //Save currency to
+        insertOrUpdateCurrency(entityTo.copy(amount = newAmountTo))
     }
 
 }

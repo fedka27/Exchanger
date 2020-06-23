@@ -1,5 +1,6 @@
 package com.teo.currency.exchanger.presentation.main.adapter
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +8,7 @@ import com.teo.currency.exchanger.business.dto.CurrencyExchange
 
 class CurrencyAdapter(
 ) : RecyclerView.Adapter<CurrencyViewHolder>() {
+    private val TAG: String = CurrencyAdapter::class.java.simpleName
 
     private var currencyExchange: CurrencyExchange? = null
 
@@ -33,6 +35,8 @@ class CurrencyAdapter(
 
     fun setCurrencyList(values: Collection<CurrencyExchange>) {
 
+        //todo update input value after update
+
         val diffCallback = CurrencyDiffCallback(list, values.toList())
 
         val result = DiffUtil.calculateDiff(diffCallback)
@@ -40,7 +44,6 @@ class CurrencyAdapter(
 
         this.list.clear()
         this.list.addAll(values)
-//        notifyDataSetChanged()
     }
 
     fun getItem(position: Int): CurrencyExchange = list[position]
@@ -48,7 +51,7 @@ class CurrencyAdapter(
     fun updateItem(currency: CurrencyExchange) {
         val index = list.indexOf(currency)
         if (index != -1) {
-            list[index].rate = currency.rate
+            list[index] = currency
             notifyItemChanged(index)
         }
     }

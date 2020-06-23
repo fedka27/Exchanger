@@ -93,13 +93,13 @@ class MainPresenter(
     }
 
     override fun onExchangeClick(
-        currencyFrom: CurrencyExchange,
-        currencyTo: CurrencyExchange
+        from: CurrencyExchange,
+        to: CurrencyExchange
     ) {
 
         compositeDisposable.add(
             mainInteractor
-                .exchangeCurrency(currencyFrom, currencyTo, currencyFrom.amountAtRate)
+                .exchangeCurrency(from, to)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
@@ -108,7 +108,10 @@ class MainPresenter(
                         //todo error
                     },
                     onSuccess = { currency ->
-                        view.updateExchangeCurrency(currency.first, currency.second)
+                        this.currencyFrom = currency.first
+                        this.currencyTo = currency.second
+
+                        view.updateExchangeCurrency(currencyFrom!!, currencyTo!!)
                         view.clearExchangeFields()
                     })
         )

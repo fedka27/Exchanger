@@ -33,8 +33,8 @@ class MainActivity :
         initCurrencyToViews()
 
         button_exchange.setOnClickListener {
-            val currencyFrom = adapterFrom!!.getItem(pager_currency_from.currentItem)
-            val currencyTo = adapterTo!!.getItem(pager_currency_to.currentItem)
+            val currencyFrom = adapterFrom.getItem(pager_currency_from.currentItem)
+            val currencyTo = adapterTo.getItem(pager_currency_to.currentItem)
 
             presenter.onExchangeClick(
                 currencyFrom,
@@ -109,6 +109,9 @@ class MainActivity :
             .show()
 
         adapterFrom.updateItem(currencyFrom)
+        adapterTo.updateItem(currencyFrom)
+
+        adapterFrom.updateItem(currencyTo)
         adapterTo.updateItem(currencyTo)
     }
 

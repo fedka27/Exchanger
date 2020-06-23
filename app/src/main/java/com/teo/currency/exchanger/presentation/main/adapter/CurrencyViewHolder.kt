@@ -15,10 +15,28 @@ class CurrencyViewHolder(
 ) :
     RecyclerView.ViewHolder(parent.inflateView(R.layout.item_page_currency)) {
 
+    private lateinit var exchangerItem: CurrencyExchange
+
+    private val textWatcher = object : TextWatcher {
+        override fun afterTextChanged(p0: Editable?) {}
+
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+        override fun onTextChanged(text: CharSequence, p1: Int, p2: Int, p3: Int) {
+            val newExchangeAmount = text.toString().toDoubleOrNull()
+
+            exchangerItem.amountAtRate = newExchangeAmount ?: 0.0
+
+            exchangeChangeListener?.invoke(exchangerItem)
+        }
+    }
+
     fun bind(
         exchangerAnother: CurrencyExchange,
         exchangerItem: CurrencyExchange
     ) {
+        this.exchangerItem = exchangerItem
+
         with(itemView) {
             //Currency symbol
             text_view_currency.text = exchangerItem.name
@@ -32,26 +50,15 @@ class CurrencyViewHolder(
 
             val rate = exchangerItem.calculateRateOneUnit(exchangerAnother)
 
+            //Remove old change listener after update
+            edit_text_exchange.removeTextChangedListener(textWatcher)
+
             //display last input value or calculate amount to exchange
             //Set calculated amount by rate
             edit_text_exchange.setText(String.format("%.2f", exchangerItem.amountAtRate))
 
             //Listener of amount changes
-            edit_text_exchange.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(p0: Editable?) {}
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-                override fun onTextChanged(text: CharSequence, p1: Int, p2: Int, p3: Int) {
-                    if (edit_text_exchange.isFocused) {
-                        val newExchangeAmount = text.toString().toDoubleOrNull()
-
-                        exchangerItem.amountAtRate = newExchangeAmount ?: 0.0
-
-                        exchangeChangeListener?.invoke(exchangerItem)
-                    }
-                }
-            })
+            edit_text_exchange.addTextChangedListener(textWatcher)
 
             //Label about one currency relative to another
             val labelOfExchange = String.format(

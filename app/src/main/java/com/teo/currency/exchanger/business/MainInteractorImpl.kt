@@ -72,18 +72,14 @@ class MainInteractorImpl(
 
     override fun exchangeCurrency(
         currencyFrom: CurrencyExchange,
-        currencyTo: CurrencyExchange,
-        currentAmount: Double
+        currencyTo: CurrencyExchange
     ): Single<Pair<CurrencyExchange, CurrencyExchange>> {
         return Single.create { singleEmitter ->
             val rate = currencyFrom.calculateRateOneUnit(currencyTo)
-            val amountTo = currencyFrom.calculateCurrencyByRate(rate)
+            val amountFromAtRate = currencyFrom.amountAtRate
+            val amountToAtRate = currencyFrom.calculateCurrencyByRate(rate)
 
-            val entityFrom = currencyDao.getCurrency(currencyFrom.name)!!
-            val entityTo = currencyDao.getCurrency(currencyTo.name)!!
-
-            //FIXME exchange the amount ot another currency
-            currencyDao.exchangeCurrency(entityFrom, entityTo, currentAmount, amountTo)
+            currencyDao.exchangeCurrency(currencyFrom.name, currencyTo.name, amountFromAtRate, amountToAtRate)
 
             val updatedFrom = currencyDao.getCurrency(currencyFrom.name)!!
                 .let {

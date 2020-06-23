@@ -12,7 +12,7 @@ object MainComponentProvider {
         if (mainComponent == null) {
             mainComponent = DaggerMainComponent.builder()
                 .module(MainModule())
-                .dependencyApi(AppComponentProvider.apiComponent)
+                .dependencyApp(AppComponentProvider.appComponent)
                 .build()
         }
 

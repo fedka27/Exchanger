@@ -1,6 +1,5 @@
 package com.teo.currency.exchanger.components.main
 
-import com.teo.currency.exchanger.components.api.ApiComponent
 import com.teo.currency.exchanger.components.app.AppComponent
 import com.teo.currency.exchanger.presentation.main.MainActivity
 import dagger.Component
@@ -11,7 +10,7 @@ import dagger.Component
         MainModule::class
     ],
     dependencies = [
-        ApiComponent::class
+        AppComponent::class
     ]
 )
 interface MainComponent {
@@ -21,7 +20,7 @@ interface MainComponent {
     interface Builder {
         fun module(mainModule: MainModule): Builder
 
-        fun dependencyApi(apiComponent: ApiComponent): Builder
+        fun dependencyApp(appComponent: AppComponent): Builder
 
         fun build(): MainComponent
     }

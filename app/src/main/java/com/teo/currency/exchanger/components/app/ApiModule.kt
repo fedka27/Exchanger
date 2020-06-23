@@ -1,7 +1,5 @@
-package com.teo.currency.exchanger.components.api
+package com.teo.currency.exchanger.components.app
 
-import android.content.Context
-import com.teo.currency.exchanger.components.app.AppScope
 import com.teo.currency.exchanger.data.network.ExchangerApi
 import dagger.Module
 import dagger.Provides
@@ -23,7 +21,7 @@ class ApiModule {
         })
         .build()
 
-    @ApiScope
+    @AppScope
     @Provides
     fun provideExchangerApi(): ExchangerApi {
         if (exchangerApi == null) {

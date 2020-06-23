@@ -69,9 +69,15 @@ class MainPresenter(
                 .subscribeBy(
                     onError = {
                         it.printStackTrace()
+                        view.showErrorLoad()
                     },
                     onNext = { map ->
-                        val list = map.values
+                        val list = map.values.toList()
+
+                        if (list.isEmpty()) {
+                            view.showErrorLoad()
+                            return@subscribeBy
+                        }
 
                         if (currencyFrom == null) {
                             val defCurrency = list.first()
@@ -97,21 +103,25 @@ class MainPresenter(
     ) {
 
         compositeDisposable.add(
-            mainInteractor
-                .exchangeCurrency(from, to)
+            mainInteractor.exchangeCurrency(from, to)
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess { currency ->
+                    this.currencyFrom = currency.first
+                    this.currencyTo = currency.second
+
+                    view.updateExchangeCurrency(currencyFrom!!, currencyTo!!)
+                }
+                .observeOn(Schedulers.io())
+                .flatMap { mainInteractor.getCurrencyList() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onError = {
                         it.printStackTrace()
                         //todo error
                     },
-                    onSuccess = { currency ->
-                        this.currencyFrom = currency.first
-                        this.currencyTo = currency.second
-
-                        view.updateExchangeCurrency(currencyFrom!!, currencyTo!!)
-                        view.clearExchangeFields()
+                    onSuccess = { list ->
+                        view.showAllCurrencyAmount(list)
                     })
         )
     }

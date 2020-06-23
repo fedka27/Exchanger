@@ -33,11 +33,11 @@ class CurrencyAdapter(
         updateItem(itemToUpdate)
     }
 
-    fun setCurrencyList(values: Collection<CurrencyExchange>) {
+    fun setCurrencyList(values: List<CurrencyExchange>) {
 
         //todo update input value after update
 
-        val diffCallback = CurrencyDiffCallback(list, values.toList())
+        val diffCallback = CurrencyDiffCallback(list, values)
 
         val result = DiffUtil.calculateDiff(diffCallback)
         result.dispatchUpdatesTo(this)

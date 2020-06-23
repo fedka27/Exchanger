@@ -19,7 +19,8 @@ class MainInteractorImpl(
                 val base = response.base
                 val rates = response.rates
 
-                val baseValue = response.rates[base] ?: 1.toDouble() //default currency relative to yourself
+                val baseValue =
+                    response.rates[base] ?: 1.toDouble() //default currency relative to yourself
                 val currency = getCurrency(base)
                 val currentCurrency = CurrencyExchange(
                     currency.name(),
@@ -59,15 +60,37 @@ class MainInteractorImpl(
                     )
                 }
 
-                //todo for test only
-                return@map hashmap.filterKeys {
-                    it == "EUR" ||
-                            it == "USD" ||
-                            it == "RUB" ||
-                            it == "GBR"
-                }
+                return@map hashmap.filterKeys { it.canDisplayCurrency() }
+                //todo debug random
+//                    .mapValues {
+//                        it.value.rate = Random().nextDouble()
+//
+//                        it.value
+//                    }
             }
 
+    }
+
+    //todo for test only
+    private fun String.canDisplayCurrency() = this == "EUR" ||
+            this == "USD" ||
+            this == "RUB" ||
+            this == "GBR"
+
+    override fun getCurrencyList(): Single<List<CurrencyExchange>> {
+        return Single.create { emitter ->
+            val entities = currencyDao.getLatestCurrency()
+
+            emitter.onSuccess(entities.map {
+                CurrencyExchange(
+                    it.name,
+                    it.symbol,
+                    it.rate,
+                    it.amount,
+                    0.0
+                )
+            }.filter { it.name.canDisplayCurrency() })
+        }
     }
 
     override fun exchangeCurrency(
@@ -79,7 +102,12 @@ class MainInteractorImpl(
             val amountFromAtRate = currencyFrom.amountAtRate
             val amountToAtRate = currencyFrom.calculateCurrencyByRate(rate)
 
-            currencyDao.exchangeCurrency(currencyFrom.name, currencyTo.name, amountFromAtRate, amountToAtRate)
+            currencyDao.exchangeCurrency(
+                currencyFrom.name,
+                currencyTo.name,
+                amountFromAtRate,
+                amountToAtRate
+            )
 
             val updatedFrom = currencyDao.getCurrency(currencyFrom.name)!!
                 .let {

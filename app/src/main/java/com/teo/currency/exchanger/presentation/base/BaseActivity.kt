@@ -1,5 +1,6 @@
 package com.teo.currency.exchanger.presentation.base
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import javax.inject.Inject
@@ -11,6 +12,8 @@ abstract class BaseActivity<
 
     @Inject
     lateinit var presenter: PRESENTER
+
+    private var alertDialog: AlertDialog? = null
 
     abstract fun initInjects()
 
@@ -39,5 +42,27 @@ abstract class BaseActivity<
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroy()
+    }
+
+    protected open fun showMessageDialog(
+        message: String?,
+        onCloseListener: (() -> Unit)? = null
+    ) {
+        if (alertDialog != null) {
+            alertDialog!!.setMessage(message)
+        } else {
+            alertDialog = AlertDialog.Builder(this)
+                .setMessage(message)
+                .setOnDismissListener {
+                    onCloseListener?.invoke()
+                }
+                .setNegativeButton(android.R.string.ok) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .create()
+        }
+        if (alertDialog?.isShowing == false) {
+            alertDialog?.show()
+        }
     }
 }

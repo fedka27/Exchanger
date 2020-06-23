@@ -15,7 +15,7 @@ object MainContract {
 
         fun hideContent()
 
-        fun setCurrencyList(values: Collection<CurrencyExchange>)
+        fun setCurrencyList(values: List<CurrencyExchange>)
 
         fun updateExchangeCurrency(currencyFrom: CurrencyExchange, currencyTo: CurrencyExchange)
 
@@ -27,7 +27,9 @@ object MainContract {
 
         fun updatedCurrencyToItem(currency: CurrencyExchange)
 
-        fun clearExchangeFields()
+        fun showAllCurrencyAmount(list: List<CurrencyExchange>)
+
+        fun showErrorLoad()
     }
 
     interface Presenter: BaseContractPresenter<View> {

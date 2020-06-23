@@ -1,11 +1,8 @@
 package com.teo.currency.exchanger.presentation.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.viewpager2.widget.ViewPager2
 import com.teo.currency.exchanger.R
 import com.teo.currency.exchanger.business.dto.CurrencyExchange
@@ -96,7 +93,7 @@ class MainActivity :
         button_exchange.visibility = GONE
     }
 
-    override fun setCurrencyList(values: Collection<CurrencyExchange>) {
+    override fun setCurrencyList(values: List<CurrencyExchange>) {
         adapterFrom.setCurrencyList(values)
         adapterTo.setCurrencyList(values)
     }
@@ -105,8 +102,6 @@ class MainActivity :
         currencyFrom: CurrencyExchange,
         currencyTo: CurrencyExchange
     ) {
-        Toast.makeText(this, "${currencyFrom.amount} and ${currencyTo.amount}", Toast.LENGTH_SHORT)
-            .show()
 
         adapterFrom.updateItem(currencyFrom)
         adapterTo.updateItem(currencyFrom)
@@ -135,8 +130,21 @@ class MainActivity :
         }
     }
 
-    override fun clearExchangeFields() {
-        adapterFrom.clearField()
-        adapterTo.clearField()
+    override fun showAllCurrencyAmount(list: List<CurrencyExchange>) {
+        showMessageDialog(
+            getString(
+                R.string.main_actual_balance,
+                list.joinToString(
+                    separator = "\n",
+                    transform = { "${it.name} - ${it.symbol}: ${String.format("%.2f", it.amount)}" }
+                )
+            )
+        )
+    }
+
+    override fun showErrorLoad() {
+        showMessageDialog(getString(R.string.error_load)) {
+            finish()
+        }
     }
 }

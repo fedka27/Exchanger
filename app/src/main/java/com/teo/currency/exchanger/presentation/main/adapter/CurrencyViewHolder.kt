@@ -23,7 +23,9 @@ class CurrencyViewHolder(
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
         override fun onTextChanged(text: CharSequence, p1: Int, p2: Int, p3: Int) {
-            val newExchangeAmount = text.toString().toDoubleOrNull()
+            val newExchangeAmount = text.toString()
+                .replace(",", ".")
+                .toDoubleOrNull()
 
             exchangerItem.amountAtRate = newExchangeAmount ?: 0.0
 

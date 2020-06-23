@@ -147,4 +147,12 @@ class MainActivity :
             finish()
         }
     }
+
+    override fun showErrorAmountZero() {
+        showMessageDialog(getString(R.string.error_enter_amount_exchange))
+    }
+
+    override fun showErrorNotEnoughAmount() {
+        showMessageDialog(getString(R.string.error_not_enough_amount))
+    }
 }

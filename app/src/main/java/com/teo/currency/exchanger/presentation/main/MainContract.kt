@@ -30,6 +30,10 @@ object MainContract {
         fun showAllCurrencyAmount(list: List<CurrencyExchange>)
 
         fun showErrorLoad()
+
+        fun showErrorAmountZero()
+
+        fun showErrorNotEnoughAmount()
     }
 
     interface Presenter: BaseContractPresenter<View> {

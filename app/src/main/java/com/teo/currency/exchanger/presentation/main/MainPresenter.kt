@@ -3,6 +3,7 @@ package com.teo.currency.exchanger.presentation.main
 import android.util.Log
 import com.teo.currency.exchanger.business.MainInteractor
 import com.teo.currency.exchanger.business.dto.CurrencyExchange
+import com.teo.currency.exchanger.data.database.dao.Errors
 import com.teo.currency.exchanger.presentation.base.BasePresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -118,7 +119,14 @@ class MainPresenter(
                 .subscribeBy(
                     onError = {
                         it.printStackTrace()
-                        //todo error
+                        when(it){
+                            is Errors.ExceptionZeroAmountValue -> {
+                                view.showErrorAmountZero()
+                            }
+                            is Errors.ExceptionNotEnoughAmount -> {
+                                view.showErrorNotEnoughAmount()
+                            }
+                        }
                     },
                     onSuccess = { list ->
                         view.showAllCurrencyAmount(list)

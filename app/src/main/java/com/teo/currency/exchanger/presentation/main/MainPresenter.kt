@@ -17,7 +17,7 @@ class MainPresenter(
 ) : BasePresenter<MainContract.View>(),
     MainContract.Presenter {
     companion object {
-        private const val INTERVAL_CURRENCY_UPDATE = 30L //Seconds
+        private const val INTERVAL_CURRENCY_UPDATE = 3L //Seconds
     }
 
     private val currencySubject = PublishSubject.create<Map<String, CurrencyExchange>>()

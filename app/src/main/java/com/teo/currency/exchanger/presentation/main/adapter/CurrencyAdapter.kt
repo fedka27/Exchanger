@@ -36,12 +36,10 @@ class CurrencyAdapter : RecyclerView.Adapter<CurrencyViewHolder>() {
 
     fun setCurrencyList(values: List<CurrencyExchange>) {
 
-        //todo update input value after update
+        val diffCallback = CurrencyDiffCallback(list, values)
 
-//        val diffCallback = CurrencyDiffCallback(list, values)
-//
-//        val result = DiffUtil.calculateDiff(diffCallback)
-//        result.dispatchUpdatesTo(this)
+        val result = DiffUtil.calculateDiff(diffCallback)
+        result.dispatchUpdatesTo(this)
 
         this.list.clear()
         this.list.addAll(values)

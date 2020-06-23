@@ -17,7 +17,7 @@ class MainPresenter(
 ) : BasePresenter<MainContract.View>(),
     MainContract.Presenter {
     companion object {
-        private const val INTERVAL_CURRENCY_UPDATE = 3L //Seconds
+        private const val INTERVAL_CURRENCY_UPDATE = 30L //Seconds
     }
 
     private val currencySubject = PublishSubject.create<Map<String, CurrencyExchange>>()
@@ -80,22 +80,34 @@ class MainPresenter(
                             return@subscribeBy
                         }
 
-                        if (currencyFrom == null) {
-                            val defCurrency = list.first()
-                            currencyFrom = defCurrency
+                        //todo refactor
+                        currencyFrom = if (currencyFrom == null) {
+                            list.first()
+                        } else {
+                            list.getActualCurrency(currencyFrom!!)
                         }
 
-                        if (currencyTo == null) {
+                        currencyTo = if (currencyTo == null) {
                             val defCurrency = list.first()
-                            currencyTo = defCurrency
+                            defCurrency
+                        } else {
+                            list.getActualCurrency(currencyTo!!)
                         }
 
                         view.setCurrencyList(list)
+
+                        //Static currency without change amount
+                        updatedCurrencyTo(currencyTo!!)
 
                         Log.d(TAG, "loadExchangerCurrency: ${map.size}")
                     }
                 )
         )
+    }
+
+    private fun List<CurrencyExchange>.getActualCurrency(currency: CurrencyExchange): CurrencyExchange {
+        return find { it == currency }!!
+            .copy(amountAtRate = currency.amountAtRate)
     }
 
     override fun onExchangeClick(
@@ -119,7 +131,7 @@ class MainPresenter(
                 .subscribeBy(
                     onError = {
                         it.printStackTrace()
-                        when(it){
+                        when (it) {
                             is Errors.ExceptionZeroAmountValue -> {
                                 view.showErrorAmountZero()
                             }

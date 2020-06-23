@@ -4,7 +4,7 @@ package com.teo.currency.exchanger.business.dto
 data class CurrencyExchange(
     val name: String,
     val symbol: String,
-    var rate: Double,
+    val rate: Double,
     var amount: Double,
     var amountAtRate: Double
 ) {

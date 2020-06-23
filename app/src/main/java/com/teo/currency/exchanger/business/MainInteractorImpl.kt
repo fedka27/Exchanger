@@ -61,12 +61,6 @@ class MainInteractorImpl(
                 }
 
                 return@map hashmap.filterKeys { it.canDisplayCurrency() }
-                //todo debug random
-//                    .mapValues {
-//                        it.value.rate = Random().nextDouble()
-//
-//                        it.value
-//                    }
             }
 
     }

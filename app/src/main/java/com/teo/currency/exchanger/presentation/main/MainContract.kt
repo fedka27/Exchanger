@@ -19,9 +19,13 @@ object MainContract {
 
         fun updateExchangeCurrency(currencyFrom: CurrencyExchange, currencyTo: CurrencyExchange)
 
-        fun updateCurrencyFrom(currency: CurrencyExchange)
+        fun updateCurrencyForEnd(currency: CurrencyExchange, item: CurrencyExchange)
 
-        fun updateCurrencyTo(currency: CurrencyExchange)
+        fun updateCurrencyForStart(currency: CurrencyExchange, item: CurrencyExchange)
+
+        fun updatedCurrencyFromItem(currency: CurrencyExchange)
+
+        fun updatedCurrencyToItem(currency: CurrencyExchange)
 
         fun clearExchangeFields()
     }
@@ -32,9 +36,9 @@ object MainContract {
             currencyTo: CurrencyExchange
         )
 
-        fun changeAmountFrom(it: CurrencyExchange)
+        fun changeAmountFrom(from: CurrencyExchange)
 
-        fun changeAmountTo(it: CurrencyExchange)
+        fun changeAmountTo(to: CurrencyExchange)
 
         fun updatedCurrencyFrom(currency: CurrencyExchange)
 

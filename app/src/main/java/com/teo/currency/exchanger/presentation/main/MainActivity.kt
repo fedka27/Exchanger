@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.viewpager2.widget.ViewPager2
 import com.teo.currency.exchanger.R
 import com.teo.currency.exchanger.business.dto.CurrencyExchange
@@ -111,12 +112,24 @@ class MainActivity :
         adapterTo.updateItem(currencyTo)
     }
 
-    override fun updateCurrencyFrom(currency: CurrencyExchange) {
-        adapterTo.updateExchangeCurrency(currency)
+    override fun updateCurrencyForEnd(currency: CurrencyExchange, item: CurrencyExchange) {
+        adapterTo.updateExchangeCurrency(currency, item)
     }
 
-    override fun updateCurrencyTo(currency: CurrencyExchange) {
-        adapterFrom.updateExchangeCurrency(currency)
+    override fun updateCurrencyForStart(currency: CurrencyExchange, item: CurrencyExchange) {
+        adapterFrom.updateExchangeCurrency(currency, item)
+    }
+
+    override fun updatedCurrencyFromItem(currency: CurrencyExchange) {
+        pager_currency_from.post {
+            adapterFrom.updateItem(currency)
+        }
+    }
+
+    override fun updatedCurrencyToItem(currency: CurrencyExchange) {
+        pager_currency_to.post {
+            adapterTo.updateItem(currency)
+        }
     }
 
     override fun clearExchangeFields() {

@@ -21,8 +21,12 @@ class MainPresenter(
 
     private val currencySubject = PublishSubject.create<Map<String, CurrencyExchange>>()
 
-    private lateinit var currencyFrom: CurrencyExchange
-    private lateinit var currencyTo: CurrencyExchange
+    /**
+     * first - from
+     * second - to
+     * */
+    private var currencyFrom: CurrencyExchange? = null
+    private var currencyTo: CurrencyExchange? = null
 
     override fun onStart() {
         super<BasePresenter>.onStart()
@@ -67,8 +71,20 @@ class MainPresenter(
                         it.printStackTrace()
                     },
                     onNext = { map ->
+                        val list = map.values
 
-                        view.setCurrencyList(map.values)
+                        if (currencyFrom == null){
+                            val defCurrency = list.first()
+
+                            currencyFrom = defCurrency
+                        }
+                        if (currencyTo == null){
+                            val defCurrency = list.first()
+
+                            currencyTo = defCurrency
+                        }
+
+                        view.setCurrencyList(list)
 
                         Log.d(TAG, "loadExchangerCurrency: ${map.size}")
                     }
@@ -98,23 +114,39 @@ class MainPresenter(
         )
     }
 
-    override fun changeAmountFrom(it: CurrencyExchange) {
+    override fun changeAmountFrom(from: CurrencyExchange) {
+        val to = currencyTo!!
+        val rate = from.calculateRateOneUnit(to)
 
+        to.amountAtRate = from.calculateCurrencyByRate(rate)
+
+        Log.d(TAG, "changeAmountFrom: ${from.amountAtRate}: ${from.name} -> ${to.name} = ${to.amountAtRate}")
+        view.updatedCurrencyToItem(to)
     }
 
-    override fun changeAmountTo(it: CurrencyExchange) {
+    override fun changeAmountTo(to: CurrencyExchange) {
+        val from = currencyFrom!!
 
+        val rate = to.calculateRateOneUnit(from)
+        from.amountAtRate = to.calculateCurrencyByRate(rate)
+
+        Log.d(TAG, "changeAmountFrom: ${to.amountAtRate}: ${from.name} -> ${to.name} = ${to.amountAtRate}")
+        view.updatedCurrencyFromItem(from)
     }
 
     override fun updatedCurrencyFrom(currency: CurrencyExchange) {
-        this.currencyFrom = currency
+        currencyFrom = currency
 
-        view.updateCurrencyFrom(currencyFrom)
+        view.updateCurrencyForEnd(currencyFrom!!, currencyTo!!)
+
+        changeAmountTo(currencyTo!!)
     }
 
     override fun updatedCurrencyTo(currency: CurrencyExchange) {
-        this.currencyTo = currency
+        currencyTo = currency
 
-        view.updateCurrencyTo(currencyTo)
+        view.updateCurrencyForStart(currencyTo!!, currencyFrom!!)
+
+        changeAmountFrom(currencyFrom!!)
     }
 }

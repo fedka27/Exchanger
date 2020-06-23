@@ -26,9 +26,9 @@ class CurrencyAdapter(
         holderCurrency.bind(currencyExchange ?: list.first(), list[position])
     }
 
-    fun updateExchangeCurrency(currencyExchangeExchange: CurrencyExchange) {
+    fun updateExchangeCurrency(currencyExchangeExchange: CurrencyExchange, itemToUpdate: CurrencyExchange) {
         this.currencyExchange = currencyExchangeExchange
-        notifyDataSetChanged()
+        updateItem(itemToUpdate)
     }
 
     fun setCurrencyList(values: Collection<CurrencyExchange>) {

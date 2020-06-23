@@ -82,6 +82,7 @@ class MainInteractorImpl(
             val entityFrom = currencyDao.getCurrency(currencyFrom.name)!!
             val entityTo = currencyDao.getCurrency(currencyTo.name)!!
 
+            //FIXME exchange the amount ot another currency
             currencyDao.exchangeCurrency(entityFrom, entityTo, currentAmount, amountTo)
 
             val updatedFrom = currencyDao.getCurrency(currencyFrom.name)!!

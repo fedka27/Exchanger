@@ -1,4 +1,4 @@
-package com.teo.currency.exchanger.presentation.extensions
+package com.teo.currency.exchanger.extensions
 
 import android.view.LayoutInflater
 import android.view.View

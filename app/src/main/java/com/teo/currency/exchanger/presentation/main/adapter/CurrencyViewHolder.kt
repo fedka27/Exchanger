@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_page_currency.view.*
 
 class CurrencyViewHolder(
     parent: ViewGroup,
-    private val exchangeChangeListener: ((CurrencyExchange) -> Unit)? = null
+    private val inputExchangeChangeListener: ((CurrencyExchange) -> Unit)? = null
 ) :
     RecyclerView.ViewHolder(parent.inflateView(R.layout.item_page_currency)) {
 
@@ -29,7 +29,7 @@ class CurrencyViewHolder(
 
             exchangerItem.amountAtRate = newExchangeAmount ?: 0.0
 
-            exchangeChangeListener?.invoke(exchangerItem)
+            inputExchangeChangeListener?.invoke(exchangerItem)
         }
     }
 

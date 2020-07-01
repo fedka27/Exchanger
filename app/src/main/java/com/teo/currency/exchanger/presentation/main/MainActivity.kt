@@ -28,25 +28,19 @@ class MainActivity :
 
         initCurrencyFromViews()
         initCurrencyToViews()
-
-        button_exchange.setOnClickListener {
-            val currencyFrom = adapterFrom.getItem(pager_currency_from.currentItem)
-            val currencyTo = adapterTo.getItem(pager_currency_to.currentItem)
-
-            presenter.onExchangeClick(
-                currencyFrom,
-                currencyTo
-            )
-        }
+        initExchangeListener()
     }
 
     private fun initCurrencyFromViews() {
         pager_currency_from.adapter = adapterFrom
         pager_currency_from.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-        adapterFrom.exchangeChangeListener = {
+        //Input listener 'FROM' currency
+        adapterFrom.inputExchangeChangeListener = {
             presenter.changeAmountFrom(it)
         }
+
+        //Swipe page listener
         pager_currency_from.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -62,9 +56,12 @@ class MainActivity :
         pager_currency_to.adapter = adapterTo
         pager_currency_to.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-        adapterTo.exchangeChangeListener = {
+        //Input listener 'TO' currency
+        adapterTo.inputExchangeChangeListener = {
             presenter.changeAmountTo(it)
         }
+
+        //Swipe page listener
         pager_currency_to.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -73,6 +70,19 @@ class MainActivity :
                 presenter.updatedCurrencyTo(currency)
             }
         })
+    }
+
+    private fun initExchangeListener() {
+        //Exchange listener
+        button_exchange.setOnClickListener {
+            val currencyFrom = adapterFrom.getItem(pager_currency_from.currentItem)
+            val currencyTo = adapterTo.getItem(pager_currency_to.currentItem)
+
+            presenter.onExchangeClick(
+                currencyFrom,
+                currencyTo
+            )
+        }
     }
 
     override fun showProgress() {

@@ -12,13 +12,13 @@ class CurrencyAdapter : RecyclerView.Adapter<CurrencyViewHolder>() {
 
     private val list = arrayListOf<CurrencyExchange>()
 
-    var exchangeChangeListener: ((CurrencyExchange) -> Unit)? = null
+    var inputExchangeChangeListener: ((CurrencyExchange) -> Unit)? = null
 
     override fun getItemCount(): Int = list.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         return CurrencyViewHolder(parent) {
-            exchangeChangeListener?.invoke(it)
+            inputExchangeChangeListener?.invoke(it)
         }
     }
 

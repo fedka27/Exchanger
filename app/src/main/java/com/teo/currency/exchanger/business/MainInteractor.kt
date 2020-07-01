@@ -12,5 +12,5 @@ interface MainInteractor {
         currencyTo: CurrencyExchange
     ): Single<Pair<CurrencyExchange, CurrencyExchange>>
 
-    fun getCurrencyList(): Single<List<CurrencyExchange>>
+    fun getBalanceCurrencyList(): Single<List<CurrencyExchange>>
 }

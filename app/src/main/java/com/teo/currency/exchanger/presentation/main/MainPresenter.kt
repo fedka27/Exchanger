@@ -37,25 +37,9 @@ class MainPresenter(
         startTimer()
     }
 
-    private fun startTimer() {
-        compositeDisposable.add(
-            Observable.interval(0, INTERVAL_CURRENCY_UPDATE, TimeUnit.SECONDS)
-                .flatMapSingle { mainInteractor.getExchangerCurrency() }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onError = {
-                        it.printStackTrace()
-                    },
-                    onNext = {
-                        currencySubject.onNext(it)
-                    }
-                )
-        )
-    }
-
     private fun initCurrencyUpdater() {
         compositeDisposable.add(
+            //Wait event from subject
             currencySubject
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -105,16 +89,32 @@ class MainPresenter(
         )
     }
 
+    private fun startTimer() {
+        compositeDisposable.add(
+            //Load immediately and updates by timer
+            Observable.interval(0, INTERVAL_CURRENCY_UPDATE, TimeUnit.SECONDS)
+                //load actual currency, starting on subscribe
+                .flatMapSingle { mainInteractor.getExchangerCurrency() }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onError = {
+                        it.printStackTrace()
+                    },
+                    onNext = {
+                        //Invoke to subject
+                        currencySubject.onNext(it)
+                    }
+                )
+        )
+    }
+
     private fun List<CurrencyExchange>.getActualCurrency(currency: CurrencyExchange): CurrencyExchange {
         return find { it == currency }!!
             .copy(amountAtRate = currency.amountAtRate)
     }
 
-    override fun onExchangeClick(
-        from: CurrencyExchange,
-        to: CurrencyExchange
-    ) {
-
+    override fun onExchangeClick(from: CurrencyExchange, to: CurrencyExchange) {
         compositeDisposable.add(
             mainInteractor.exchangeCurrency(from, to)
                 .subscribeOn(Schedulers.io())
@@ -126,7 +126,8 @@ class MainPresenter(
                     view.updateExchangeCurrency(currencyFrom!!, currencyTo!!)
                 }
                 .observeOn(Schedulers.io())
-                .flatMap { mainInteractor.getCurrencyList() }
+                // load actual balance
+                .flatMap { mainInteractor.getBalanceCurrencyList() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onError = {

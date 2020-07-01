@@ -71,7 +71,7 @@ class MainInteractorImpl(
             this == "RUB" ||
             this == "GBP"
 
-    override fun getCurrencyList(): Single<List<CurrencyExchange>> {
+    override fun getBalanceCurrencyList(): Single<List<CurrencyExchange>> {
         return Single.create { emitter ->
             val entities = currencyDao.getLatestCurrency()
 

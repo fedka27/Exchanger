@@ -23,11 +23,11 @@ class MainInteractorImpl(
                     response.rates[base] ?: 1.toDouble() //default currency relative to yourself
                 val currency = getCurrency(base)
                 val currentCurrency = CurrencyExchange(
-                    currency.name(),
-                    currency.symbol(),
-                    baseValue,
-                    getBalanceOfCurrency(base),
-                    0.0
+                    name = currency.name(),
+                    symbol = currency.symbol(),
+                    rate = baseValue,
+                    amount = getBalanceOfCurrency(base),
+                    amountAtRate = 0.0
                 )
 
                 val hashmap = hashMapOf<String, CurrencyExchange>()
@@ -39,11 +39,11 @@ class MainInteractorImpl(
                             rates.mapValues {
                                 val currencyItem = getCurrency(it.key)
                                 CurrencyExchange(
-                                    currencyItem.name(),
-                                    currencyItem.symbol(),
-                                    it.value,
-                                    getBalanceOfCurrency(it.key),
-                                    0.0
+                                    name = currencyItem.name(),
+                                    symbol = currencyItem.symbol(),
+                                    rate = it.value,
+                                    amount = getBalanceOfCurrency(it.key),
+                                    amountAtRate = 0.0
                                 )
                             }
                         )
@@ -52,10 +52,10 @@ class MainInteractorImpl(
                 hashmap.values.forEach {
                     currencyDao.insertOrUpdateCurrency(
                         CurrencyEntity(
-                            it.name,
-                            it.symbol,
-                            it.amount,
-                            it.rate
+                            name = it.name,
+                            symbol = it.symbol,
+                            amount = it.amount,
+                            rate = it.rate
                         )
                     )
                 }
@@ -77,11 +77,11 @@ class MainInteractorImpl(
 
             emitter.onSuccess(entities.map {
                 CurrencyExchange(
-                    it.name,
-                    it.symbol,
-                    it.rate,
-                    it.amount,
-                    0.0
+                    name = it.name,
+                    symbol = it.symbol,
+                    rate = it.rate,
+                    amount = it.amount,
+                    amountAtRate = 0.0
                 )
             }.filter { it.name.canDisplayCurrency() })
         }
@@ -106,22 +106,22 @@ class MainInteractorImpl(
             val updatedFrom = currencyDao.getCurrency(currencyFrom.name)!!
                 .let {
                     CurrencyExchange(
-                        it.name,
-                        it.symbol,
-                        it.rate,
-                        it.amount,
-                        0.0
+                        name = it.name,
+                        symbol = it.symbol,
+                        rate = it.rate,
+                        amount = it.amount,
+                        amountAtRate = 0.0
                     )
                 }
 
             val updatedTo = currencyDao.getCurrency(currencyTo.name)!!
                 .let {
                     CurrencyExchange(
-                        it.name,
-                        it.symbol,
-                        it.rate,
-                        it.amount,
-                        0.0
+                        name = it.name,
+                        symbol = it.symbol,
+                        rate = it.rate,
+                        amount = it.amount,
+                        amountAtRate = 0.0
                     )
                 }
 

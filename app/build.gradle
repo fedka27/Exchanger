@@ -5,12 +5,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion compileVersion
 
     defaultConfig {
         applicationId "com.teo.currency.exchanger"
-        minSdkVersion 21
-        targetSdkVersion 29
+        minSdkVersion minVersion
+        targetSdkVersion targetVersion
         versionCode 1
         versionName "1.0"
 

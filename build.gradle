@@ -1,10 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        compileVersion = 28
-        targetVersion = 28
+        gradleVersion = '4.0.0'
+
+        minVersion = 21
+        compileVersion = 29
+        targetVersion = 29
 
         kotlinVersion = '1.3.72'
+        daggerVersion = '2.16'
         retrofitVersion = '2.4.0'
         okhttpVersion = '3.11.0'
         roomVersion = '1.1.1'
@@ -13,7 +17,7 @@ buildscript {
 
         retrofit = { m -> "com.squareup.retrofit2:$m:$retrofitVersion" }
         okhttp = { m -> "com.squareup.okhttp3:$m:$okhttpVersion" }
-        dagger = { m -> "com.google.dagger:$m:2.16" }
+        dagger = { m -> "com.google.dagger:$m:$daggerVersion" }
         gson = { "com.google.code.gson:gson:$gsonVersion" }
         roomDB = { m -> "android.arch.persistence.room:$m:$roomVersion" }
         junit = { "junit:junit:$junitVersion" }
@@ -24,7 +28,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.0.0"
+        classpath "com.android.tools.build:gradle:$gradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
         // NOTE: Do not place your application dependencies here; they belong

@@ -1,6 +1,6 @@
 package com.teo.currency.exchanger.presentation.main.exchanger
 
-import com.teo.currency.exchanger.business.dto.CurrencyExchange
+import com.teo.currency.exchanger.business.exchanger.model.CurrencyExchange
 import com.teo.currency.exchanger.presentation.base.BaseView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType

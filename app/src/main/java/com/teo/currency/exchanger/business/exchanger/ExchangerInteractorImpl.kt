@@ -1,9 +1,9 @@
-package com.teo.currency.exchanger.business
+package com.teo.currency.exchanger.business.exchanger
 
-import com.teo.currency.exchanger.business.dto.CurrencyExchange
+import com.teo.currency.exchanger.business.exchanger.model.CurrencyExchange
 import com.teo.currency.exchanger.data.database.dao.CurrencyDao
 import com.teo.currency.exchanger.data.database.entity.CurrencyEntity
-import com.teo.currency.exchanger.data.network.ExchangerApi
+import com.teo.currency.exchanger.data.network.exchanger.ExchangerApi
 import io.reactivex.rxjava3.core.Single
 import java.util.*
 

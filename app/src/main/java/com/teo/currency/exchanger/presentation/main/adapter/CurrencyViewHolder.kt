@@ -5,7 +5,7 @@ import android.text.TextWatcher
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.teo.currency.exchanger.R
-import com.teo.currency.exchanger.business.dto.CurrencyExchange
+import com.teo.currency.exchanger.business.exchanger.model.CurrencyExchange
 import com.teo.currency.exchanger.presentation.extensions.inflateView
 import kotlinx.android.synthetic.main.item_page_currency.view.*
 

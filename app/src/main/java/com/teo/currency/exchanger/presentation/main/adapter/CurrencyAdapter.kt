@@ -3,7 +3,7 @@ package com.teo.currency.exchanger.presentation.main.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.teo.currency.exchanger.business.dto.CurrencyExchange
+import com.teo.currency.exchanger.business.exchanger.model.CurrencyExchange
 
 class CurrencyAdapter : RecyclerView.Adapter<CurrencyViewHolder>() {
     private val TAG: String = CurrencyAdapter::class.java.simpleName

@@ -1,4 +1,4 @@
-package com.teo.currency.exchanger.business.dto
+package com.teo.currency.exchanger.business.exchanger.model
 
 
 data class CurrencyExchange(

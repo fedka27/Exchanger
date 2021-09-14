@@ -1,8 +1,8 @@
 package com.teo.currency.exchanger.presentation.main.exchanger
 
 import android.util.Log
-import com.teo.currency.exchanger.business.ExchangerInteractor
-import com.teo.currency.exchanger.business.dto.CurrencyExchange
+import com.teo.currency.exchanger.business.exchanger.ExchangerInteractor
+import com.teo.currency.exchanger.business.exchanger.model.CurrencyExchange
 import com.teo.currency.exchanger.data.database.dao.Errors
 import com.teo.currency.exchanger.presentation.base.BasePresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.teo.currency.exchanger.data.database.AppDatabase
 import com.teo.currency.exchanger.data.database.dao.CurrencyDao
+import com.teo.currency.exchanger.data.database.dao.MoviesDao
 import dagger.Module
 import dagger.Provides
 
@@ -26,5 +27,9 @@ class DatabaseModule {
     @AppScope
     @Provides
     fun provideCurrencyDao(appDatabase: AppDatabase): CurrencyDao = appDatabase.currencyDao()
+
+    @AppScope
+    @Provides
+    fun provideMoviesDao(appDatabase: AppDatabase): MoviesDao = appDatabase.moviesDao()
 
 }

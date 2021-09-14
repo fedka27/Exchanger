@@ -8,7 +8,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.teo.currency.exchanger.R
-import com.teo.currency.exchanger.business.dto.CurrencyExchange
+import com.teo.currency.exchanger.business.exchanger.model.CurrencyExchange
 import com.teo.currency.exchanger.components.providers.main.exchanger.ExchangerComponentProvider
 import com.teo.currency.exchanger.presentation.base.BaseFragment
 import com.teo.currency.exchanger.presentation.main.adapter.CurrencyAdapter

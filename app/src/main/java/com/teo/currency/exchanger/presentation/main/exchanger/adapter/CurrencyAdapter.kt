@@ -1,4 +1,4 @@
-package com.teo.currency.exchanger.presentation.main.adapter
+package com.teo.currency.exchanger.presentation.main.exchanger.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

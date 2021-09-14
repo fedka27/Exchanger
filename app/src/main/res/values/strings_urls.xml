@@ -2,5 +2,6 @@
 <resources>
     <string name="base_url_exchanger">https://api.exchangeratesapi.io/</string>
     <string name="base_url_movies">https://api.themoviedb.org/3/</string>
+    <string name="base_url_movies_image">https://www.themoviedb.org/t/p/w220_and_h330_face</string>
     <string name="api_key_movies">41f4d02979140db673686c12e6ccfe10</string>
 </resources>

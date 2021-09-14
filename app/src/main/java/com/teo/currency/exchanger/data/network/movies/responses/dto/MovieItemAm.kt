@@ -17,7 +17,7 @@ class MovieItemAm(
     val originalLanguage: String?,
     @SerializedName("original_title")
     val originalTitle: String?,
-    @SerializedName("description")
+    @SerializedName("overview")
     val description: String?,
     @SerializedName("popularity")
     val popularity: Float,

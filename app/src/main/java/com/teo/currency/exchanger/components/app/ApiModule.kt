@@ -55,7 +55,7 @@ class ApiModule {
     @AppScope
     @Provides
     fun provideMoviesApi(
-        resourceProvider: AppResourceProviderImpl,
+        resourceProvider: AppResourceProvider,
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
         callAdapterFactory: CallAdapter.Factory

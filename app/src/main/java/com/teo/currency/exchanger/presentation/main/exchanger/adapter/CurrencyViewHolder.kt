@@ -1,4 +1,4 @@
-package com.teo.currency.exchanger.presentation.main.adapter
+package com.teo.currency.exchanger.presentation.main.exchanger.adapter
 
 import android.text.Editable
 import android.text.TextWatcher

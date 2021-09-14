@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.teo.currency.exchanger.R
 import com.teo.currency.exchanger.components.providers.main.MainComponentProvider
 import com.teo.currency.exchanger.presentation.base.BaseActivity
-import com.teo.currency.exchanger.presentation.main.exchanger.ExchangerFragment
+import com.teo.currency.exchanger.presentation.main.movies.MoviesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -31,7 +31,7 @@ class MainActivity : BaseActivity<MainView>(), MainView {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction()
-            .replace(content_container.id, ExchangerFragment())
+            .replace(content_container.id, MoviesFragment())
             .commit()
     }
 

@@ -11,7 +11,7 @@ import com.teo.currency.exchanger.R
 import com.teo.currency.exchanger.business.exchanger.model.CurrencyExchange
 import com.teo.currency.exchanger.components.providers.main.exchanger.ExchangerComponentProvider
 import com.teo.currency.exchanger.presentation.base.BaseFragment
-import com.teo.currency.exchanger.presentation.main.adapter.CurrencyAdapter
+import com.teo.currency.exchanger.presentation.main.exchanger.adapter.CurrencyAdapter
 import kotlinx.android.synthetic.main.fragment_exchanger.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter

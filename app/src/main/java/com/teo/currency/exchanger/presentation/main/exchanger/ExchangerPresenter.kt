@@ -23,13 +23,8 @@ class ExchangerPresenter(
 
     private val currencySubject = PublishSubject.create<Map<String, CurrencyExchange>>()
 
-    /**
-     * first - from
-     * second - to
-     * */
     private var currencyFrom: CurrencyExchange? = null
     private var currencyTo: CurrencyExchange? = null
-
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()

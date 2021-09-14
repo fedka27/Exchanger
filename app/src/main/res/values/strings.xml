@@ -8,4 +8,6 @@
     <string name="error_not_enough_amount">Not enough money to exchange</string>
     <string name="main_actual_balance">"Actual balance: \n%s"</string>
     <string name="error_load">Error load exchange rates… Press ok to exit</string>
+    <string name="movies_title">Movies</string>
+    <string name="movies_label_adult">18+</string>
 </resources>

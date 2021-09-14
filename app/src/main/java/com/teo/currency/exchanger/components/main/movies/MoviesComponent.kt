@@ -1,7 +1,7 @@
 package com.teo.currency.exchanger.components.main.movies
 
 import com.teo.currency.exchanger.components.app.AppComponent
-import com.teo.currency.exchanger.presentation.main.exchanger.ExchangerFragment
+import com.teo.currency.exchanger.presentation.main.movies.MoviesFragment
 import dagger.Component
 
 @MoviesScope
@@ -10,7 +10,7 @@ import dagger.Component
     modules = [MoviesModule::class]
 )
 interface MoviesComponent {
-//    fun inject(exchangerFragment: ExchangerFragment)
+    fun inject(moviesFragment: MoviesFragment)
 
     @Component.Builder
     interface Builder {

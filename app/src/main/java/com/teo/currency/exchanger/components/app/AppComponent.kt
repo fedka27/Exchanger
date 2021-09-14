@@ -4,6 +4,8 @@ import com.teo.currency.exchanger.data.database.AppDatabase
 import com.teo.currency.exchanger.data.database.dao.CurrencyDao
 import com.teo.currency.exchanger.data.database.dao.MoviesDao
 import com.teo.currency.exchanger.data.network.exchanger.ExchangerApi
+import com.teo.currency.exchanger.data.network.movies.MoviesApi
+import com.teo.currency.exchanger.utils.AppResourceProvider
 import dagger.Component
 
 @AppScope
@@ -16,9 +18,10 @@ import dagger.Component
 )
 interface AppComponent {
 
-    fun provideExchangerApi(): ExchangerApi
+    fun provideResourceProvider(): AppResourceProvider
 
-    fun provideDatabase(): AppDatabase
+    fun provideExchangerApi(): ExchangerApi
+    fun provideMoviesApi(): MoviesApi
 
     fun provideCurrencyDao(): CurrencyDao
     fun provideMoviesDao(): MoviesDao

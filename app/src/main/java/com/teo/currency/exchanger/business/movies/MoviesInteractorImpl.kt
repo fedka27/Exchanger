@@ -26,10 +26,10 @@ class MoviesInteractorImpl(
             query = "300"
         ).map { movieAmMapper.mapList(it.results) }
 
-        val favorites = moviesDao.getAllFavorites()
-            .let { movieEntityMapper.mapList(it) }
-
         return moviesSingle.map { movies ->
+            val favorites = moviesDao.getAllFavorites()
+                .let { movieEntityMapper.mapList(it) }
+
             movies.onEach { movie ->
                 movie.isFavorite = favorites.contains(movie)
             }

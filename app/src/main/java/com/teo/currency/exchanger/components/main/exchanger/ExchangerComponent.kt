@@ -1,8 +1,6 @@
 package com.teo.currency.exchanger.components.main.exchanger
 
 import com.teo.currency.exchanger.components.app.AppComponent
-import com.teo.currency.exchanger.components.main.MainComponent
-import com.teo.currency.exchanger.components.main.MainModule
 import com.teo.currency.exchanger.presentation.main.exchanger.ExchangerFragment
 import dagger.Component
 

@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.core.Single
 //todo implement paging
 interface MoviesInteractor {
 
-    fun getMovies(): Single<List<MovieItem>>
+    fun getMovies(favorites: Boolean): Single<List<MovieItem>>
 
     fun addToFavorites(movieItem: MovieItem): Completable
 }

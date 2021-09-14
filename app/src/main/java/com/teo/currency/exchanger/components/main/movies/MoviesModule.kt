@@ -12,12 +12,17 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class MoviesModule {
+class MoviesModule(
+    private val showFavorites: Boolean
+) {
 
     @MoviesScope
     @Provides
     fun providePresenter(moviesInteractor: MoviesInteractor): MoviesPresenter {
-        return MoviesPresenter(moviesInteractor)
+        return MoviesPresenter(
+            showFavorites = showFavorites,
+            moviesInteractor = moviesInteractor
+        )
     }
 
     @MoviesScope

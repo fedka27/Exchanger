@@ -13,17 +13,21 @@ import moxy.InjectViewState
 
 @InjectViewState
 class MoviesPresenter(
+    private val showFavorites: Boolean,
     private val moviesInteractor: MoviesInteractor
 ) : BasePresenter<MoviesView>() {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
+        viewState.setVisibleFavoritesButton(!showFavorites)
+        viewState.setVisibleNavigationButton(showFavorites)
+
         loadMovies()
     }
 
     private fun loadMovies() {
         compositeDisposable.add(moviesInteractor
-            .getMovies()
+            .getMovies(showFavorites)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { viewState.showProgress() }
@@ -42,5 +46,13 @@ class MoviesPresenter(
 
     fun onMovieClick(movieItem: MovieItem) {
         //TODO("Not yet implemented")
+    }
+
+    fun favoritesClick() {
+        viewState.openFavoritesScreen()
+    }
+
+    fun onNavigationClick() {
+        viewState.onBack()
     }
 }

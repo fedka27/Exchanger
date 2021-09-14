@@ -4,7 +4,6 @@ import com.teo.currency.exchanger.R
 import com.teo.currency.exchanger.business.mappers.movie.MovieAmMapper
 import com.teo.currency.exchanger.business.movies.model.MovieItem
 import com.teo.currency.exchanger.data.database.dao.MoviesDao
-import com.teo.currency.exchanger.data.database.entity.MovieEntity
 import com.teo.currency.exchanger.data.database.mappers.MovieEntityMapper
 import com.teo.currency.exchanger.data.network.movies.MoviesApi
 import com.teo.currency.exchanger.utils.AppResourceProvider
@@ -19,19 +18,29 @@ class MoviesInteractorImpl(
     private val movieEntityMapper: MovieEntityMapper
 ) : MoviesInteractor {
 
-    override fun getMovies(): Single<List<MovieItem>> {
+    override fun getMovies(favorites: Boolean): Single<List<MovieItem>> {
+        return if (favorites) getFavorites()
+        else getRemoteMovies()
+    }
 
+    private fun getFavorites(): Single<List<MovieItem>> {
+        return Single.fromCallable { moviesDao.getAllFavorites() }
+            .map { movieEntityMapper.mapList(it) }
+    }
+
+    private fun getRemoteMovies(): Single<List<MovieItem>> {
         val moviesSingle = moviesApi.getMovies(
             apiKey = resourceProvider.getString(R.string.api_key_movies),
             query = "300"
         ).map { movieAmMapper.mapList(it.results) }
 
-        return moviesSingle.map { movies ->
-            val favorites = moviesDao.getAllFavorites()
-                .let { movieEntityMapper.mapList(it) }
+        val favoritesSingle = getFavorites()
 
-            movies.onEach { movie ->
-                movie.isFavorite = favorites.contains(movie)
+        return favoritesSingle.flatMap { favorites ->
+            moviesSingle.map { movies ->
+                movies.onEach { movie ->
+                    movie.isFavorite = favorites.contains(movie)
+                }
             }
         }
     }

@@ -6,10 +6,13 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.teo.currency.exchanger.R
 import com.teo.currency.exchanger.business.movies.model.MovieItem
-import com.teo.currency.exchanger.components.providers.main.movies.MoviesComponentProvider
+import com.teo.currency.exchanger.components.main.movies.DaggerMoviesComponent
+import com.teo.currency.exchanger.components.main.movies.MoviesModule
+import com.teo.currency.exchanger.components.providers.app.AppComponentProvider
 import com.teo.currency.exchanger.presentation.base.BaseFragment
 import com.teo.currency.exchanger.presentation.main.movies.adapter.MoviesAdapter
 import kotlinx.android.synthetic.main.fragment_movies.*
@@ -19,6 +22,17 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class MoviesFragment : BaseFragment(), MoviesView {
+
+    companion object {
+        private const val KEY_SHOW_FAVORITES = "KEY_SHOW_FAVORITES"
+        fun newInstance(showFavorites: Boolean): MoviesFragment {
+            return MoviesFragment().apply {
+                arguments = bundleOf(
+                    KEY_SHOW_FAVORITES to showFavorites
+                )
+            }
+        }
+    }
 
     @Inject
     lateinit var presenterProvider: Provider<MoviesPresenter>
@@ -32,7 +46,13 @@ class MoviesFragment : BaseFragment(), MoviesView {
     private val adapter = MoviesAdapter()
 
     override fun initInjects() {
-        MoviesComponentProvider.moviesComponent.inject(this)
+        val showFavorites = arguments?.getBoolean(KEY_SHOW_FAVORITES) ?: false
+
+        DaggerMoviesComponent.builder()
+            .module(MoviesModule(showFavorites))
+            .dependencyApp(AppComponentProvider.appComponent)
+            .build()
+            .inject(this)
     }
 
     override fun onCreateView(
@@ -50,10 +70,32 @@ class MoviesFragment : BaseFragment(), MoviesView {
     }
 
     private fun initControls() {
+        toolbar.setOnMenuItemClickListener {
+            return@setOnMenuItemClickListener when (it.itemId) {
+                R.id.favoritesAction -> {
+                    presenter.favoritesClick()
+                    true
+                }
+                else -> false
+            }
+        }
+
         rvMovies.adapter = adapter
         adapter.movieClickListener = {
             presenter.onMovieClick(it)
         }
+    }
+
+    override fun setVisibleNavigationButton(visible: Boolean) {
+        toolbar.navigationIcon =
+            if (visible) context?.getDrawable(R.drawable.ic_arrow_back)
+            else null
+
+        toolbar.setNavigationOnClickListener { presenter.onNavigationClick() }
+    }
+
+    override fun setVisibleFavoritesButton(visible: Boolean) {
+        toolbar.menu.findItem(R.id.favoritesAction).isVisible = visible
     }
 
     override fun showProgress() {
@@ -69,7 +111,6 @@ class MoviesFragment : BaseFragment(), MoviesView {
     }
 
     override fun hideContent() {
-
         rvMovies.isVisible = false
     }
 
@@ -79,9 +120,25 @@ class MoviesFragment : BaseFragment(), MoviesView {
 
     override fun showErrorLoad() {
         hideProgress()
-        showMessageDialog(getString(R.string.error_load)) {
-            activity?.finish() //todo change logic to reload
+        tvFailedLoad.isVisible = true
+        tvFailedLoad.text = String.format(
+            "%s\n%s",
+            getString(R.string.movies_error_load),
+            getString(R.string.info_movie_favorites)
+        )
+    }
+
+    override fun openFavoritesScreen() {
+        fragmentManager?.apply {
+            beginTransaction()
+                .add(id, MoviesFragment.newInstance(true))
+                .addToBackStack(null)
+                .commit()
         }
+    }
+
+    override fun onBack() {
+        fragmentManager?.popBackStack()
     }
 
     override fun onDestroyView() {

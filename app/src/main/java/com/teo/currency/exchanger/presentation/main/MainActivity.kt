@@ -31,7 +31,7 @@ class MainActivity : BaseActivity<MainView>(), MainView {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction()
-            .replace(content_container.id, MoviesFragment())
+            .replace(content_container.id, MoviesFragment.newInstance(false))
             .commit()
     }
 

@@ -10,4 +10,7 @@
     <string name="error_load">Error load exchange rates… Press ok to exit</string>
     <string name="movies_title">Movies</string>
     <string name="movies_label_adult">18+</string>
+    <string name="movies_favorites">Favorites</string>
+    <string name="movies_error_load">Failed to load movies</string>
+    <string name="info_movie_favorites">You can see your favorite movies</string>
 </resources>

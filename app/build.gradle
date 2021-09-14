@@ -28,6 +28,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -63,6 +67,10 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxkotlin:3.0.0'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0'
+
+    /*Moxy*/
+    implementation moxy()
+    kapt moxyCompiler()
 
     testImplementation junit()
 

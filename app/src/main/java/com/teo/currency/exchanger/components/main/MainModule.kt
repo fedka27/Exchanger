@@ -1,7 +1,7 @@
 package com.teo.currency.exchanger.components.main
 
-import com.teo.currency.exchanger.business.MainInteractor
-import com.teo.currency.exchanger.business.MainInteractorImpl
+import com.teo.currency.exchanger.business.ExchangerInteractor
+import com.teo.currency.exchanger.business.ExchangerInteractorImpl
 import com.teo.currency.exchanger.data.database.AppDatabase
 import com.teo.currency.exchanger.data.network.ExchangerApi
 import com.teo.currency.exchanger.presentation.main.MainContract
@@ -14,16 +14,7 @@ class MainModule {
 
     @MainScope
     @Provides
-    fun provideMainPresenter(mainInteractor: MainInteractor): MainContract.Presenter {
-        return MainPresenter(mainInteractor)
-    }
-
-    @MainScope
-    @Provides
-    fun provideMainInteractor(
-        exchangerApi: ExchangerApi,
-        appDatabase: AppDatabase
-    ): MainInteractor {
-        return MainInteractorImpl(exchangerApi, appDatabase.currencyDao())
+    fun provideMainPresenter(): MainContract.Presenter {
+        return MainPresenter()
     }
 }

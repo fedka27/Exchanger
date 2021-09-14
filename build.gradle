@@ -13,6 +13,7 @@ buildscript {
         okhttpVersion = '3.11.0'
         roomVersion = '1.1.1'
         gsonVersion = '2.8.2'
+        moxyVersion = '2.0.2'
         junitVersion = '4.12'
 
         retrofit = { m -> "com.squareup.retrofit2:$m:$retrofitVersion" }
@@ -20,12 +21,16 @@ buildscript {
         dagger = { m -> "com.google.dagger:$m:$daggerVersion" }
         gson = { "com.google.code.gson:gson:$gsonVersion" }
         roomDB = { m -> "android.arch.persistence.room:$m:$roomVersion" }
+        moxy = { "com.github.moxy-community:moxy:$moxyVersion" }
+        moxyCompiler = { "com.github.moxy-community:moxy-compiler:$moxyVersion" }
+        moxyX = { "com.github.moxy-community:moxy-androidx:$moxyVersion" }
         junit = { "junit:junit:$junitVersion" }
     }
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleVersion"
@@ -40,6 +45,8 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 

@@ -2,13 +2,15 @@ package com.teo.currency.exchanger.presentation.base
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import javax.inject.Inject
 
-abstract class BaseActivity<
+abstract class BaseFragment<
         VIEW : BaseContractView,
-        PRESENTER : BaseContractPresenter<VIEW>> : AppCompatActivity() {
-    protected val TAG: String = BaseActivity::class.java.simpleName
+        PRESENTER : BaseContractPresenter<VIEW>> : Fragment() {
+    protected val TAG: String = BaseFragment::class.java.simpleName
 
     @Inject
     lateinit var presenter: PRESENTER
@@ -24,8 +26,8 @@ abstract class BaseActivity<
         super.onCreate(savedInstanceState)
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         presenter.onCreate()
     }
 
@@ -44,25 +46,10 @@ abstract class BaseActivity<
         presenter.onDestroy()
     }
 
-    public open fun showMessageDialog(
+    protected open fun showMessageDialog(
         message: String?,
         onCloseListener: (() -> Unit)? = null
     ) {
-        if (alertDialog != null) {
-            alertDialog!!.setMessage(message)
-        } else {
-            alertDialog = AlertDialog.Builder(this)
-                .setMessage(message)
-                .setOnDismissListener {
-                    onCloseListener?.invoke()
-                }
-                .setNegativeButton(android.R.string.ok) { dialog, _ ->
-                    dialog.cancel()
-                }
-                .create()
-        }
-        if (alertDialog?.isShowing == false) {
-            alertDialog?.show()
-        }
+        (activity as? BaseActivity<*, *>)?.showMessageDialog(message, onCloseListener)
     }
 }

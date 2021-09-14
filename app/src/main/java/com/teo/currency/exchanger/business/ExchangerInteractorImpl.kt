@@ -7,10 +7,10 @@ import com.teo.currency.exchanger.data.network.ExchangerApi
 import io.reactivex.rxjava3.core.Single
 import java.util.*
 
-class MainInteractorImpl(
+class ExchangerInteractorImpl(
     private val exchangerApi: ExchangerApi,
     private val currencyDao: CurrencyDao
-) : MainInteractor {
+) : ExchangerInteractor {
 
     override fun getExchangerCurrency(): Single<Map<String, CurrencyExchange>> {
         return exchangerApi.getLatestCurrency()
@@ -19,8 +19,7 @@ class MainInteractorImpl(
                 val base = response.base
                 val rates = response.rates
 
-                val baseValue =
-                    response.rates[base] ?: 1.toDouble() //default currency relative to yourself
+                val baseValue = response.rates[base] ?: 1.toDouble() //default currency relative to yourself
                 val currency = getCurrency(base)
                 val currentCurrency = CurrencyExchange(
                     currency.name(),

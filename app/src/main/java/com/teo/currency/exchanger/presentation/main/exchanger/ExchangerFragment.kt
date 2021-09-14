@@ -6,20 +6,28 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.teo.currency.exchanger.R
 import com.teo.currency.exchanger.business.dto.CurrencyExchange
-import com.teo.currency.exchanger.components.providers.main.MainComponentProvider
 import com.teo.currency.exchanger.components.providers.main.exchanger.ExchangerComponentProvider
-import com.teo.currency.exchanger.presentation.base.BaseActivity
 import com.teo.currency.exchanger.presentation.base.BaseFragment
 import com.teo.currency.exchanger.presentation.main.adapter.CurrencyAdapter
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_exchanger.*
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
+import javax.inject.Provider
 
-class ExchangerFragment :
-    BaseFragment<ExchangerContract.View, ExchangerContract.Presenter>(),
-    ExchangerContract.View {
+class ExchangerFragment : BaseFragment(), ExchangerView {
+
+    @Inject
+    lateinit var presenterProvider: Provider<ExchangerPresenter>
+
+    @ProvidePresenter
+    fun providePresenter(): ExchangerPresenter = presenterProvider.get()
+
+    @InjectPresenter
+    lateinit var presenter: ExchangerPresenter
 
     private var adapterFrom = CurrencyAdapter()
     private var adapterTo = CurrencyAdapter()
@@ -36,9 +44,8 @@ class ExchangerFragment :
         return inflater.inflate(R.layout.fragment_exchanger, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initCurrencyFromViews()
         initCurrencyToViews()
 

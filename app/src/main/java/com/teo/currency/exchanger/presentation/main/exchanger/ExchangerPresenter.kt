@@ -10,12 +10,13 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
+import moxy.InjectViewState
 import java.util.concurrent.TimeUnit
 
+@InjectViewState
 class ExchangerPresenter(
     private val exchangerInteractor: ExchangerInteractor
-) : BasePresenter<ExchangerContract.View>(),
-    ExchangerContract.Presenter {
+) : BasePresenter<ExchangerView>() {
     companion object {
         private const val INTERVAL_CURRENCY_UPDATE = 30L //Seconds
     }
@@ -29,11 +30,10 @@ class ExchangerPresenter(
     private var currencyFrom: CurrencyExchange? = null
     private var currencyTo: CurrencyExchange? = null
 
-    override fun onStart() {
-        super<BasePresenter>.onStart()
 
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
         initCurrencyUpdater()
-
         startTimer()
     }
 
@@ -47,7 +47,7 @@ class ExchangerPresenter(
                 currencySubject.onNext(it)
             }, {
                 it.printStackTrace()
-                view.showErrorLoad()
+                viewState.showErrorLoad()
             })
         )
     }
@@ -57,16 +57,16 @@ class ExchangerPresenter(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
-                view.hideContent()
-                view.showProgress()
+                viewState.hideContent()
+                viewState.showProgress()
             }
             .doOnNext {
-                view.displayContent()
-                view.hideProgress()
+                viewState.displayContent()
+                viewState.hideProgress()
             }
             .subscribe(this::handleCurrencyUpdated) {
                 it.printStackTrace()
-                view.showErrorLoad()
+                viewState.showErrorLoad()
             }
         )
     }
@@ -75,7 +75,7 @@ class ExchangerPresenter(
         val list = map.values.toList()
 
         if (list.isEmpty()) {
-            view.showErrorLoad()
+            viewState.showErrorLoad()
             return
         }
 
@@ -93,7 +93,7 @@ class ExchangerPresenter(
             list.getActualCurrency(currencyTo!!)
         }
 
-        view.setCurrencyList(list)
+        viewState.setCurrencyList(list)
 
         //Static currency without change amount
         updatedCurrencyTo(currencyTo!!)
@@ -107,7 +107,7 @@ class ExchangerPresenter(
             .copy(amountAtRate = currency.amountAtRate)
     }
 
-    override fun onExchangeClick(
+    fun onExchangeClick(
         from: CurrencyExchange,
         to: CurrencyExchange
     ) {
@@ -120,7 +120,7 @@ class ExchangerPresenter(
                     this.currencyFrom = currency.first
                     this.currencyTo = currency.second
 
-                    view.updateExchangeCurrency(currencyFrom!!, currencyTo!!)
+                    viewState.updateExchangeCurrency(currencyFrom!!, currencyTo!!)
                 }
                 .observeOn(Schedulers.io())
                 .flatMap { exchangerInteractor.getCurrencyList() }
@@ -130,20 +130,20 @@ class ExchangerPresenter(
                         it.printStackTrace()
                         when (it) {
                             is Errors.ExceptionZeroAmountValue -> {
-                                view.showErrorAmountZero()
+                                viewState.showErrorAmountZero()
                             }
                             is Errors.ExceptionNotEnoughAmount -> {
-                                view.showErrorNotEnoughAmount()
+                                viewState.showErrorNotEnoughAmount()
                             }
                         }
                     },
                     onSuccess = { list ->
-                        view.showAllCurrencyAmount(list)
+                        viewState.showAllCurrencyAmount(list)
                     })
         )
     }
 
-    override fun changeAmountFrom(from: CurrencyExchange) {
+    fun changeAmountFrom(from: CurrencyExchange) {
         currencyFrom = from
 
         val to = currencyTo!!
@@ -155,10 +155,10 @@ class ExchangerPresenter(
             TAG,
             "changeAmountFrom: ${from.amountAtRate}: ${from.name} -> ${to.name} = ${to.amountAtRate}"
         )
-        view.updatedCurrencyToItem(to)
+        viewState.updatedCurrencyToItem(to)
     }
 
-    override fun changeAmountTo(to: CurrencyExchange) {
+    fun changeAmountTo(to: CurrencyExchange) {
         currencyTo = to
 
         val from = currencyFrom!!
@@ -170,21 +170,21 @@ class ExchangerPresenter(
             TAG,
             "changeAmountFrom: ${to.amountAtRate}: ${from.name} -> ${to.name} = ${to.amountAtRate}"
         )
-        view.updatedCurrencyFromItem(from)
+        viewState.updatedCurrencyFromItem(from)
     }
 
-    override fun updatedCurrencyFrom(currency: CurrencyExchange) {
+    fun updatedCurrencyFrom(currency: CurrencyExchange) {
         currencyFrom = currency
 
-        view.updateCurrencyForEnd(currencyFrom!!, currencyTo!!)
+        viewState.updateCurrencyForEnd(currencyFrom!!, currencyTo!!)
 
         changeAmountTo(currencyTo!!)
     }
 
-    override fun updatedCurrencyTo(currency: CurrencyExchange) {
+    fun updatedCurrencyTo(currency: CurrencyExchange) {
         currencyTo = currency
 
-        view.updateCurrencyForStart(currencyTo!!, currencyFrom!!)
+        viewState.updateCurrencyForStart(currencyTo!!, currencyFrom!!)
 
         changeAmountFrom(currencyFrom!!)
     }

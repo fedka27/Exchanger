@@ -1,12 +1,12 @@
 package com.teo.currency.exchanger.presentation.main.exchanger
 
 import com.teo.currency.exchanger.business.dto.CurrencyExchange
-import com.teo.currency.exchanger.presentation.base.BaseContractPresenter
-import com.teo.currency.exchanger.presentation.base.BaseContractView
+import com.teo.currency.exchanger.presentation.base.BaseView
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
-object ExchangerContract {
-    interface View : BaseContractView {
-
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface ExchangerView : BaseView{
         fun showProgress()
 
         fun hideProgress()
@@ -34,21 +34,5 @@ object ExchangerContract {
         fun showErrorAmountZero()
 
         fun showErrorNotEnoughAmount()
-    }
 
-    interface Presenter : BaseContractPresenter<View> {
-        fun onExchangeClick(
-            from: CurrencyExchange,
-            to: CurrencyExchange
-        )
-
-        fun changeAmountFrom(from: CurrencyExchange)
-
-        fun changeAmountTo(to: CurrencyExchange)
-
-        fun updatedCurrencyFrom(currency: CurrencyExchange)
-
-        fun updatedCurrencyTo(currency: CurrencyExchange)
-
-    }
 }

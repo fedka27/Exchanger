@@ -1,15 +1,14 @@
 package com.teo.currency.exchanger.presentation.base
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import moxy.MvpPresenter
 
-abstract class BasePresenter<VIEW : BaseContractView> : BaseContractPresenter<VIEW> {
+open class BasePresenter<VIEW : BaseView> : MvpPresenter<VIEW>() {
     val TAG: String = BasePresenter::class.java.simpleName
-
-    override lateinit var view: VIEW
 
     protected var compositeDisposable = CompositeDisposable()
 
-    override fun onStop() {
+    override fun onDestroy() {
         compositeDisposable.clear()
     }
 }

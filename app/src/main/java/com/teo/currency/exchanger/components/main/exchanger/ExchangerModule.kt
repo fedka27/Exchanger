@@ -4,7 +4,6 @@ import com.teo.currency.exchanger.business.ExchangerInteractor
 import com.teo.currency.exchanger.business.ExchangerInteractorImpl
 import com.teo.currency.exchanger.data.database.AppDatabase
 import com.teo.currency.exchanger.data.network.ExchangerApi
-import com.teo.currency.exchanger.presentation.main.exchanger.ExchangerContract
 import com.teo.currency.exchanger.presentation.main.exchanger.ExchangerPresenter
 import dagger.Module
 import dagger.Provides
@@ -14,7 +13,7 @@ class ExchangerModule {
 
     @ExchangerScope
     @Provides
-    fun providePresenter(exchangerInteractor: ExchangerInteractor): ExchangerContract.Presenter {
+    fun providePresenter(exchangerInteractor: ExchangerInteractor): ExchangerPresenter {
         return ExchangerPresenter(exchangerInteractor)
     }
 

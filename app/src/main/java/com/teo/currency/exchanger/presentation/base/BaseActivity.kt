@@ -2,16 +2,10 @@ package com.teo.currency.exchanger.presentation.base
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import javax.inject.Inject
+import moxy.MvpAppCompatActivity
 
-abstract class BaseActivity<
-        VIEW : BaseContractView,
-        PRESENTER : BaseContractPresenter<VIEW>> : AppCompatActivity() {
+abstract class BaseActivity<VIEW : BaseView> : MvpAppCompatActivity(), BaseView {
     protected val TAG: String = BaseActivity::class.java.simpleName
-
-    @Inject
-    lateinit var presenter: PRESENTER
 
     private var alertDialog: AlertDialog? = null
 
@@ -19,29 +13,7 @@ abstract class BaseActivity<
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initInjects()
-        presenter.view = this as VIEW
-
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        presenter.onCreate()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        presenter.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        presenter.onStop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDestroy()
     }
 
     public open fun showMessageDialog(

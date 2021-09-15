@@ -24,4 +24,8 @@ abstract class BaseFragment : MvpAppCompatFragment(), BaseView {
     ) {
         (activity as? BaseActivity<*>)?.showMessageDialog(message, onCloseListener)
     }
+
+    override fun onBack() {
+        (activity as? BaseActivity<*>)?.onBack()
+    }
 }

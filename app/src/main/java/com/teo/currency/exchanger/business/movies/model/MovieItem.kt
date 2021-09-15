@@ -1,5 +1,9 @@
 package com.teo.currency.exchanger.business.movies.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 class MovieItem(
     val id: Int,
     val adult: Boolean,
@@ -16,7 +20,7 @@ class MovieItem(
     val video: Boolean?,
     val voteAverage: Float?,
     val voteCount: Int?
-) {
+): Parcelable {
     var isFavorite: Boolean = false
 
     override fun equals(other: Any?): Boolean {

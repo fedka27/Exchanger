@@ -37,4 +37,12 @@ abstract class BaseActivity<VIEW : BaseView> : MvpAppCompatActivity(), BaseView 
             alertDialog?.show()
         }
     }
+
+    override fun onBack() {
+        if (supportFragmentManager.backStackEntryCount > 0){
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }

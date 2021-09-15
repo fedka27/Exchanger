@@ -10,11 +10,10 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.teo.currency.exchanger.R
 import com.teo.currency.exchanger.business.movies.model.MovieItem
-import com.teo.currency.exchanger.components.main.movies.DaggerMoviesComponent
-import com.teo.currency.exchanger.components.main.movies.MoviesModule
-import com.teo.currency.exchanger.components.providers.app.AppComponentProvider
+import com.teo.currency.exchanger.components.providers.main.movies.MoviesComponentProvider
 import com.teo.currency.exchanger.presentation.base.BaseFragment
 import com.teo.currency.exchanger.presentation.main.movies.adapter.MoviesAdapter
+import com.teo.currency.exchanger.presentation.main.movies.details.MovieDetailsFragment
 import kotlinx.android.synthetic.main.fragment_movies.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -48,11 +47,7 @@ class MoviesFragment : BaseFragment(), MoviesView {
     override fun initInjects() {
         val showFavorites = arguments?.getBoolean(KEY_SHOW_FAVORITES) ?: false
 
-        DaggerMoviesComponent.builder()
-            .module(MoviesModule(showFavorites))
-            .dependencyApp(AppComponentProvider.appComponent)
-            .build()
-            .inject(this)
+        MoviesComponentProvider.get(showFavorites).inject(this)
     }
 
     override fun onCreateView(
@@ -137,13 +132,16 @@ class MoviesFragment : BaseFragment(), MoviesView {
         }
     }
 
-    override fun onBack() {
-        fragmentManager?.popBackStack()
-    }
+    override fun openMovieDetailsScreen(movieItem: MovieItem) {
+        fragmentManager?.apply {
+            beginTransaction()
+                .add(id, MovieDetailsFragment.newInstance(movieItem))
+                .addToBackStack(null)
+                .commit()
+        }    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         rvMovies.adapter = null
     }
-
 }

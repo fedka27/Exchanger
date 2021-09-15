@@ -45,14 +45,10 @@ class MoviesPresenter(
     }
 
     fun onMovieClick(movieItem: MovieItem) {
-        //TODO("Not yet implemented")
+        viewState.openMovieDetailsScreen(movieItem)
     }
 
     fun favoritesClick() {
         viewState.openFavoritesScreen()
-    }
-
-    fun onNavigationClick() {
-        viewState.onBack()
     }
 }

@@ -25,5 +25,5 @@ interface MoviesView : BaseView {
 
     fun openFavoritesScreen()
 
-    fun onBack()
+    fun openMovieDetailsScreen(movieItem: MovieItem)
 }

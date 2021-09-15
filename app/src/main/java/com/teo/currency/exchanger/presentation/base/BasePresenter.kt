@@ -8,6 +8,10 @@ open class BasePresenter<VIEW : BaseView> : MvpPresenter<VIEW>() {
 
     protected var compositeDisposable = CompositeDisposable()
 
+    fun onNavigationClick(){
+        viewState.onBack()
+    }
+
     override fun onDestroy() {
         compositeDisposable.clear()
     }
